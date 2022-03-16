@@ -1,0 +1,461 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20211104.074212.4896.0.001.json",
+    "dumpEventTime": "2021-11-04T07:42:12Z",
+    "dumpEventTimeStamp": "1635990132628",
+    "processId": 4896,
+    "cwd": "F:\\Insta Web Work\\zoho_api_axios",
+    "commandLine": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "F:\\Insta Web Work\\zoho_api_axios\\node_modules\\react-scripts\\scripts\\build.js"
+    ],
+    "nodejsVersion": "v12.13.0",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "win32",
+    "componentVersions": {
+      "node": "12.13.0",
+      "v8": "7.7.299.13-node.12",
+      "uv": "1.32.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.2",
+      "napi": "5",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1d",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "lts": "Erbium",
+      "headersUrl": "https://nodejs.org/download/release/v12.13.0/node-v12.13.0-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.13.0/node-v12.13.0.tar.gz",
+      "libUrl": "https://nodejs.org/download/release/v12.13.0/win-x64/node.lib"
+    },
+    "osName": "Windows_NT",
+    "osRelease": "10.0.19041",
+    "osVersion": "Windows 10 Pro",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i3-7020U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 719156,
+        "nice": 0,
+        "sys": 551812,
+        "idle": 1327390,
+        "irq": 31265
+      },
+      {
+        "model": "Intel(R) Core(TM) i3-7020U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 773625,
+        "nice": 0,
+        "sys": 423937,
+        "idle": 1400578,
+        "irq": 7093
+      },
+      {
+        "model": "Intel(R) Core(TM) i3-7020U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 886375,
+        "nice": 0,
+        "sys": 412062,
+        "idle": 1299703,
+        "irq": 5218
+      },
+      {
+        "model": "Intel(R) Core(TM) i3-7020U CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 894453,
+        "nice": 0,
+        "sys": 350140,
+        "idle": 1353546,
+        "irq": 4531
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "WiFi",
+        "internal": false,
+        "mac": "10:5b:ad:b2:15:e3",
+        "address": "fe80::2521:62de:2ec4:a2d2",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 4
+      },
+      {
+        "name": "WiFi",
+        "internal": false,
+        "mac": "10:5b:ad:b2:15:e3",
+        "address": "192.168.68.107",
+        "netmask": "255.255.255.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      }
+    ],
+    "host": "DESKTOP-GV31QMP"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x00007ff7b4e61389",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+10873"
+    },
+    {
+      "pc": "0x00007ff7b4e657cc",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+28348"
+    },
+    {
+      "pc": "0x00007ff7b4e64778",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+24168"
+    },
+    {
+      "pc": "0x00007ff7b4f5332b",
+      "symbol": "v8::base::CPU::has_sse+37723"
+    },
+    {
+      "pc": "0x00007ff7b5756f4e",
+      "symbol": "v8::Isolate::ReportExternalAllocationLimitReached+94"
+    },
+    {
+      "pc": "0x00007ff7b573ef91",
+      "symbol": "v8::SharedArrayBuffer::Externalize+833"
+    },
+    {
+      "pc": "0x00007ff7b560c85c",
+      "symbol": "v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1436"
+    },
+    {
+      "pc": "0x00007ff7b5617c00",
+      "symbol": "v8::internal::Heap::ProtectUnprotectedMemoryChunks+1312"
+    },
+    {
+      "pc": "0x00007ff7b5614734",
+      "symbol": "v8::internal::Heap::PageFlagsAreConsistent+3204"
+    },
+    {
+      "pc": "0x00007ff7b5609fc3",
+      "symbol": "v8::internal::Heap::CollectGarbage+1283"
+    },
+    {
+      "pc": "0x00007ff7b5608794",
+      "symbol": "v8::internal::Heap::AddRetainedMap+2356"
+    },
+    {
+      "pc": "0x00007ff7b5629a65",
+      "symbol": "v8::internal::Factory::NewFillerObject+53"
+    },
+    {
+      "pc": "0x00007ff7b53960c7",
+      "symbol": "v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+3687"
+    },
+    {
+      "pc": "0x00007ff7b5b82c6d",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+567949"
+    },
+    {
+      "pc": "0x0000004097bb3c93",
+      "symbol": ""
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2152529920,
+    "totalCommittedMemory": 2152529920,
+    "usedMemory": 2128149104,
+    "availableMemory": 50676768,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 262144,
+        "capacity": 261872,
+        "used": 32296,
+        "available": 229576
+      },
+      "new_space": {
+        "memorySize": 2097152,
+        "committedMemory": 2097152,
+        "capacity": 1047488,
+        "used": 6496,
+        "available": 1040992
+      },
+      "old_space": {
+        "memorySize": 1993977856,
+        "committedMemory": 1993977856,
+        "capacity": 1978912104,
+        "used": 1975838768,
+        "available": 3073336
+      },
+      "code_space": {
+        "memorySize": 2785280,
+        "committedMemory": 2785280,
+        "capacity": 2316192,
+        "used": 2316192,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 9441280,
+        "committedMemory": 9441280,
+        "capacity": 6338560,
+        "used": 6338560,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 143343616,
+        "committedMemory": 143343616,
+        "capacity": 143066392,
+        "used": 143066392,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 622592,
+        "committedMemory": 622592,
+        "capacity": 550400,
+        "used": 550400,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 1047488,
+        "used": 0,
+        "available": 1047488
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 366.546,
+    "kernelCpuSeconds": 20.25,
+    "cpuConsumptionPercent": 159.833,
+    "maxRss": 2279895040,
+    "pageFaults": {
+      "IORequired": 2352105,
+      "IONotRequired": 0
+    },
+    "fsActivity": {
+      "reads": 14902,
+      "writes": 3985
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "": "C:=C:\\",
+    "ALLUSERSPROFILE": "C:\\ProgramData",
+    "APPDATA": "C:\\Users\\Dell\\AppData\\Roaming",
+    "BABEL_ENV": "production",
+    "CommonProgramFiles": "C:\\Program Files\\Common Files",
+    "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+    "CommonProgramW6432": "C:\\Program Files\\Common Files",
+    "COMPUTERNAME": "DESKTOP-GV31QMP",
+    "ComSpec": "C:\\Windows\\system32\\cmd.exe",
+    "dp0": "C:\\Users\\Dell\\AppData\\Roaming\\npm\\",
+    "DriverData": "C:\\Windows\\System32\\Drivers\\DriverData",
+    "HOMEDRIVE": "C:",
+    "HOMEPATH": "\\Users\\Dell",
+    "INIT_CWD": "F:\\Insta Web Work\\zoho_api_axios",
+    "LOCALAPPDATA": "C:\\Users\\Dell\\AppData\\Local",
+    "LOGONSERVER": "\\\\DESKTOP-GV31QMP",
+    "NODE": "C:\\Program Files\\nodejs\\node.exe",
+    "NODE_ENV": "production",
+    "NODE_PATH": "",
+    "npm_config_argv": "{\"remain\":[],\"cooked\":[\"run\",\"build\"],\"original\":[\"build\"]}",
+    "npm_config_bin_links": "true",
+    "npm_config_ignore_optional": "",
+    "npm_config_ignore_scripts": "",
+    "npm_config_init_license": "MIT",
+    "npm_config_init_version": "1.0.0",
+    "npm_config_registry": "https://registry.yarnpkg.com",
+    "npm_config_save_prefix": "^",
+    "npm_config_strict_ssl": "true",
+    "npm_config_user_agent": "yarn/1.22.17 npm/? node/v12.13.0 win32 x64",
+    "npm_config_version_commit_hooks": "true",
+    "npm_config_version_git_message": "v%s",
+    "npm_config_version_git_sign": "",
+    "npm_config_version_git_tag": "true",
+    "npm_config_version_tag_prefix": "v",
+    "npm_execpath": "C:\\Users\\Dell\\AppData\\Roaming\\npm\\node_modules\\yarn\\bin\\yarn.js",
+    "npm_lifecycle_event": "build",
+    "npm_lifecycle_script": "react-scripts build",
+    "npm_node_execpath": "C:\\Program Files\\nodejs\\node.exe",
+    "npm_package_author_name": "WrapPixel",
+    "npm_package_browserslist_development_0": "last 1 chrome version",
+    "npm_package_browserslist_development_1": "last 1 firefox version",
+    "npm_package_browserslist_development_2": "last 1 safari version",
+    "npm_package_browserslist_production_0": ">0.2%",
+    "npm_package_browserslist_production_1": "not dead",
+    "npm_package_browserslist_production_2": "not op_mini all",
+    "npm_package_dependencies_axios": "^0.21.4",
+    "npm_package_dependencies_bootstrap": "5.1.0",
+    "npm_package_dependencies_feather_icons_react": "^0.4.3",
+    "npm_package_dependencies_gulp": "^4.0.2",
+    "npm_package_dependencies_image_thumbnail": "^1.0.13",
+    "npm_package_dependencies_immer": "^9.0.5",
+    "npm_package_dependencies_list_react_files": "^0.2.0",
+    "npm_package_dependencies_moment": "^2.29.1",
+    "npm_package_dependencies_pdf_viewer_reactjs": "^2.2.3",
+    "npm_package_dependencies_prop_types": "^15.7.2",
+    "npm_package_dependencies_react": "^17.0.2",
+    "npm_package_dependencies_react_bootstrap": "^2.0.0-beta.6",
+    "npm_package_dependencies_react_contextmenu": "^2.14.0",
+    "npm_package_dependencies_react_custom_scrollbars": "^4.2.1",
+    "npm_package_dependencies_react_dom": "^17.0.2",
+    "npm_package_dependencies_react_dropzone": "^11.4.2",
+    "npm_package_dependencies_react_file_viewer": "^1.2.1",
+    "npm_package_dependencies_react_hook_form": "^7.17.2",
+    "npm_package_dependencies_react_icons": "^4.3.1",
+    "npm_package_dependencies_react_image": "^4.0.3",
+    "npm_package_dependencies_react_image_gallery": "^1.2.7",
+    "npm_package_dependencies_react_keyed_file_browser": "^1.13.1",
+    "npm_package_dependencies_react_motion": "^0.5.2",
+    "npm_package_dependencies_react_pdf": "4.0.5",
+    "npm_package_dependencies_react_perfect_scrollbar": "^1.5.8",
+    "npm_package_dependencies_react_scripts": "4.0.3",
+    "npm_package_dependencies_react_thumbnail": "^1.0.0",
+    "npm_package_dependencies_react_to_print": "^2.13.0",
+    "npm_package_dependencies_react_tracked": "^1.7.3",
+    "npm_package_dependencies_styled_components": "^5.3.3",
+    "npm_package_dependencies_web_vitals": "^1.1.1",
+    "npm_package_dependencies_zustand": "^3.5.7",
+    "npm_package_dependencies__emotion_cache": "^11.4.0",
+    "npm_package_dependencies__emotion_react": "^11.5.0",
+    "npm_package_dependencies__emotion_styled": "^11.3.0",
+    "npm_package_dependencies__material_ui_core": "^5.0.0-beta.2",
+    "npm_package_dependencies__material_ui_data_grid": "^4.0.0-alpha.34",
+    "npm_package_dependencies__material_ui_icons": "^5.0.0-beta.1",
+    "npm_package_dependencies__material_ui_lab": "5.0.0-alpha.38",
+    "npm_package_dependencies__material_ui_system": "^5.0.0-beta.2",
+    "npm_package_dependencies__mikecousins_react_pdf": "^5.5.1",
+    "npm_package_dependencies__mui_icons_material": "^5.0.4",
+    "npm_package_dependencies__mui_material": "^5.0.4",
+    "npm_package_dependencies__mui_styles": "^5.0.1",
+    "npm_package_dependencies__opuscapita_filemanager_server": "^1.1.10",
+    "npm_package_dependencies__opuscapita_react_filemanager": "^1.1.10",
+    "npm_package_dependencies__opuscapita_react_filemanager_connector_node_v1": "^1.1.10",
+    "npm_package_dependencies__pdftron_pdfjs_express": "^8.0.1",
+    "npm_package_dependencies__pdftron_webviewer": "^8.1.0",
+    "npm_package_dependencies__react_pdf_renderer": "1.6.8",
+    "npm_package_dependencies__testing_library_jest_dom": "^5.11.10",
+    "npm_package_dependencies__testing_library_react": "^11.2.6",
+    "npm_package_dependencies__testing_library_user_event": "^12.8.3",
+    "npm_package_description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+    "npm_package_devDependencies_axios_mock_adapter": "^1.18.1",
+    "npm_package_devDependencies__material_ui_codemod": "^5.0.0-alpha.35",
+    "npm_package_eslintConfig_extends_0": "react-app",
+    "npm_package_eslintConfig_extends_1": "react-app/jest",
+    "npm_package_homepage": "http://.",
+    "npm_package_name": "main",
+    "npm_package_private": "true",
+    "npm_package_proxy": "https://workdrive.zoho.com/",
+    "npm_package_readmeFilename": "README.md",
+    "npm_package_scripts_build": "react-scripts build",
+    "npm_package_scripts_eject": "react-scripts eject",
+    "npm_package_scripts_postinstall": "node tools/copy-webviewer-files.js",
+    "npm_package_scripts_start": "react-scripts start",
+    "npm_package_scripts_test": "react-scripts test",
+    "npm_package_version": "0.1.0",
+    "NUMBER_OF_PROCESSORS": "4",
+    "OneDrive": "C:\\Users\\Dell\\OneDrive",
+    "OS": "Windows_NT",
+    "Path": "C:\\Users\\Dell\\AppData\\Local\\Temp\\yarn--1635989889679-0.9203397864192768;F:\\Insta Web Work\\zoho_api_axios\\node_modules\\.bin;C:\\Users\\Dell\\AppData\\Local\\Yarn\\Data\\link\\node_modules\\.bin;C:\\Users\\Dell\\AppData\\Local\\Yarn\\bin;C:\\Program Files\\libexec\\lib\\node_modules\\npm\\bin\\node-gyp-bin;C:\\Program Files\\lib\\node_modules\\npm\\bin\\node-gyp-bin;C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\node-gyp-bin;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\Users\\Dell\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Dell\\AppData\\Roaming\\npm",
+    "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JSE;.WSF;.WSH;.MSC",
+    "PROCESSOR_ARCHITECTURE": "AMD64",
+    "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 142 Stepping 9, GenuineIntel",
+    "PROCESSOR_LEVEL": "6",
+    "PROCESSOR_REVISION": "8e09",
+    "ProgramData": "C:\\ProgramData",
+    "ProgramFiles": "C:\\Program Files",
+    "ProgramFiles(x86)": "C:\\Program Files (x86)",
+    "ProgramW6432": "C:\\Program Files",
+    "PROMPT": "$P$G",
+    "PSModulePath": "C:\\Program Files\\WindowsPowerShell\\Modules;C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
+    "PUBLIC": "C:\\Users\\Public",
+    "SESSIONNAME": "Console",
+    "SystemDrive": "C:",
+    "SystemRoot": "C:\\Windows",
+    "TEMP": "C:\\Users\\Dell\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\Dell\\AppData\\Local\\Temp",
+    "USERDOMAIN": "DESKTOP-GV31QMP",
+    "USERDOMAIN_ROAMINGPROFILE": "DESKTOP-GV31QMP",
+    "USERNAME": "Dell",
+    "USERPROFILE": "C:\\Users\\Dell",
+    "windir": "C:\\Windows",
+    "YARN_WRAP_OUTPUT": "false",
+    "ZES_ENABLE_SYSMAN": "1",
+    "_prog": "node"
+  },
+  "sharedObjects": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\Windows\\SYSTEM32\\ntdll.dll",
+    "C:\\Windows\\System32\\KERNEL32.DLL",
+    "C:\\Windows\\System32\\KERNELBASE.dll",
+    "C:\\Windows\\System32\\WS2_32.dll",
+    "C:\\Windows\\System32\\RPCRT4.dll",
+    "C:\\Windows\\SYSTEM32\\dbghelp.dll",
+    "C:\\Windows\\System32\\ucrtbase.dll",
+    "C:\\Windows\\System32\\ADVAPI32.dll",
+    "C:\\Windows\\System32\\msvcrt.dll",
+    "C:\\Windows\\System32\\sechost.dll",
+    "C:\\Windows\\System32\\USER32.dll",
+    "C:\\Windows\\System32\\win32u.dll",
+    "C:\\Windows\\System32\\GDI32.dll",
+    "C:\\Windows\\System32\\gdi32full.dll",
+    "C:\\Windows\\System32\\msvcp_win.dll",
+    "C:\\Windows\\System32\\PSAPI.DLL",
+    "C:\\Windows\\System32\\CRYPT32.dll",
+    "C:\\Windows\\System32\\bcrypt.dll",
+    "C:\\Windows\\SYSTEM32\\IPHLPAPI.DLL",
+    "C:\\Windows\\SYSTEM32\\USERENV.dll",
+    "C:\\Windows\\SYSTEM32\\WINMM.dll",
+    "C:\\Windows\\System32\\IMM32.DLL",
+    "C:\\Windows\\SYSTEM32\\powrprof.dll",
+    "C:\\Windows\\SYSTEM32\\UMPDC.dll",
+    "C:\\Windows\\system32\\uxtheme.dll",
+    "C:\\Windows\\System32\\combase.dll",
+    "C:\\Windows\\system32\\mswsock.dll",
+    "C:\\Windows\\SYSTEM32\\kernel.appcore.dll",
+    "C:\\Windows\\System32\\bcryptprimitives.dll",
+    "C:\\Windows\\SYSTEM32\\ntmarta.dll",
+    "C:\\Windows\\System32\\NSI.dll",
+    "C:\\Windows\\SYSTEM32\\dhcpcsvc6.DLL",
+    "C:\\Windows\\SYSTEM32\\dhcpcsvc.DLL",
+    "C:\\Windows\\SYSTEM32\\DNSAPI.dll",
+    "C:\\Windows\\system32\\napinsp.dll",
+    "C:\\Windows\\system32\\pnrpnsp.dll",
+    "C:\\Windows\\system32\\wshbth.dll",
+    "C:\\Windows\\system32\\NLAapi.dll",
+    "C:\\Windows\\System32\\winrnr.dll"
+  ]
+}
