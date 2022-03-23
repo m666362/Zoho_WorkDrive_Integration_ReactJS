@@ -121,7 +121,7 @@ function Response(props) {
   async function setBreadCrumbsUrl(file) {
     if (!state.apiData.hasOwnProperty(file?.id)) {
       Object.keys(state.apiData).map((i) => console.log(i));
-      console.log({ notFound: "id notFound found setBreadCrumbsUrl" });
+      console.log({ notFound: "id not Found found setBreadCrumbsUrl" });
 
       // console.log(file.id, ' setBreadCrumbsUrl');
       // console.log({notFound: 'id not found setBreadCrumbsUrl'});
@@ -134,6 +134,8 @@ function Response(props) {
           },
         });
 
+        const myRes = ApiCall.getFoldersItem("any", file?.id);
+        console.log({ myRes });
         state.setBreadCrumbsUrl(file);
         state.setApiData(file.id, response.data.data);
         setPost(response.data.data);
@@ -214,13 +216,17 @@ function Response(props) {
     files.forEach(async (element, index) => {
       console.log({ FolderId: state.bread[state.bread.length - 1].id });
       const data = new FormData();
-      data.append("content", element);
-      console.warn(element);
+      data.append("file", element);
+      // console.warn(element);
+      console.log({
+        formData: data,
+        element,
+      });
       // console.log({fileUploading: myUrl});
       try {
         const response = await ApiCall.fileUploader(
           state.token,
-          data,
+          element,
           folderId
         );
         console.log({ testPurpose: response });
@@ -277,6 +283,7 @@ function Response(props) {
       justifyContent="center"
       {...getRootProps({ className: "dropzone disabled" })}
     >
+      {/* <div>{JSON.stringify(post??[])}</div> */}
       {/* <div>
         <div>{
           state.bread.map(i => <div>{JSON.stringify(i)}</div>)
@@ -326,7 +333,7 @@ function Response(props) {
           </Typography>
         </Grid>
       )}
-      <div>{JSON.stringify(post??[])}</div>
+      {/* <div>{JSON.stringify(post??[])}</div> */}
       {filteredData.length !== 0 && (
         <Grid
           container
@@ -385,15 +392,19 @@ function Response(props) {
             {state.listView ? (
               <Grid
                 container
-                spacing={true ? { xs: 2, md: 3 } : {}}
-                columns={true ? { xs: 4, sm: 8, md: 12 } : {}}
+                spacing={true ? { xs: 2, md: 4 } : {}}
                 rowSpacing={false ? 0 : 1}
                 columnSpacing={false ? {} : { xs: 1, sm: 2, md: 3 }}
               >
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={6} md={false ? 3 : 6}>
+                      <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        md={4}
+                      >
                         <CommonComponent
                           file={file}
                           handleClick={() => handleClick(file)}
@@ -416,7 +427,7 @@ function Response(props) {
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={6} md={false ? 3 : 6}>
+                      <Grid item xs={12} md={3}>
                         <CommonComponent
                           file={file}
                           handleClick={() => handleClick(file)}

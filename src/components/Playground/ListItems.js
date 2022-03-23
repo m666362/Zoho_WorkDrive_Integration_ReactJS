@@ -12,6 +12,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 
+import * as ApiCall from "./api/ApiCalling";
+
 import ModalPdf from "./ModalPdf";
 
 import useTrackedStore from "../../store/useTrackedStore";
@@ -50,19 +52,21 @@ function ListItems({ file }) {
   const state = useTrackedStore();
 
   const getUserImage = async (file) => {
-    let res = await axios({
-      method: "get",
-      headers: {
-        Accept: "application/vnd.api+json",
-        Authorization: state.token,
-      },
-      responseType: "blob",
-      url: `https://workdrive.zoho.com/api/v1/download/${file?.id}`,
-    });
-    console.log(
-      "file.attributes.thumbnail_url",
-      file?.attributes.thumbnail_url
-    );
+    // let res = await axios({
+    //   method: "get",
+    //   headers: {
+    //     Accept: "application/vnd.api+json",
+    //     Authorization: state.token,
+    //   },
+    //   responseType: "blob",
+    //   url: `https://workdrive.zoho.com/api/v1/download/${file?.id}`,
+    // });
+    // console.log(
+    //   "file.attributes.thumbnail_url",
+    //   file?.attributes.thumbnail_url
+    // );
+    let res = await ApiCall.getImageResponse("any", file)
+    console.log({res, id: file?.id});
     var file = new Blob([res.data]);
     var fileURL = URL.createObjectURL(file);
     console.log("fileURL", fileURL);
@@ -106,7 +110,7 @@ function ListItems({ file }) {
         }}
       >
         <Grid item>
-          <Avatar sx={{ margin: 2 }}>{file?.attributes.extn}</Avatar>
+          <Avatar sx={{ margin: 1 }}>{file?.attributes.extn}</Avatar>
         </Grid>
         <Grid item xs>
           <Typography>{file?.attributes.name}</Typography>

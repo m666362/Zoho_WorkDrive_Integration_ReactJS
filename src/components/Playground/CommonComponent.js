@@ -288,7 +288,7 @@ const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
           onDrop={(e) => handleDrop(e, file)}
         >
           <Folder
-            icon={<FolderOpenIcon className={classes.icon} />}
+            icon={<FolderOpenIcon className={classes.icon}/>}
             title={file.attributes.name}
             details={file.attributes.created_time_i18}
           />
@@ -338,7 +338,8 @@ const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
           {file.attributes.extn === "zip" ? (
             <FileImageCard file={file} />
           ) : (
-            <FileImageCard file={file} />
+            <div>Hello</div>
+            // <FileImageCard file={file} />
           )}
         </Grid>
       );

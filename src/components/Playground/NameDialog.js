@@ -40,13 +40,14 @@ function NameDialog({ open, setOpen, handleClose, setPost, post }) {
         },
       })
       .then((response) => {
-        console.log(response);
+        console.log({myRes: response});
 
         let myCustomArray = [response.data.data, ...post];
         setPost(myCustomArray);
         state.setApiData(state.bread.slice(-1)[0].id, myCustomArray);
       })
       .catch((error) => {
+        console.log({myRes: response});
         console.log(error);
       });
 

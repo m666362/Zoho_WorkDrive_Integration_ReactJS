@@ -1,5 +1,6 @@
 function PdfViewer({profileImage}) {
   const src = `lib/web/viewer.html?file=${profileImage}`
+
   return (
     <div className="App">
       <iframe

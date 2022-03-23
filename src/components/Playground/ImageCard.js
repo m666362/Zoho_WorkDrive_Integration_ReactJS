@@ -50,12 +50,12 @@ const CustomImage = styled("img")(({ theme }) => ({
     height: "170px",
   },
   [theme.breakpoints.up("md")]: {
-    width: "300px",
+    width: "200px",
     height: "170px",
   },
   [theme.breakpoints.up("xl")]: {
-    width: "433px",
-    height: "317px",
+    width: "200px",
+    height: "170px",
   },
 }));
 
@@ -63,8 +63,8 @@ const useStyles = makeStyles({
   fileroot: {
     border: "2px solid #E0E0E0",
     // padding: 10,
-    // minWidth: 300,
-    // minHeight: 250,
+    minWidth: 200,
+    minHeight: 170,
     borderRadius: "5px",
     "&:hover": {
       boxShadow: "0 0 1px 1px #E0E0E0",
@@ -81,8 +81,8 @@ const useStyles = makeStyles({
     padding: "0 10px",
   },
   image: {
-    width: "400px",
-    height: "300px",
+    width: "200px",
+    height: "170px",
   },
 });
 
@@ -127,7 +127,7 @@ export default function ActionAreaCard({ file }) {
 
   React.useEffect(async () => {
     console.log({
-      url: `https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`,
+      url: `--https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`,
     });
     let resData = await ApiCall.getThumbnailData(state.token, file);
     // console.log(file);
@@ -145,7 +145,7 @@ export default function ActionAreaCard({ file }) {
 
   const getUserImage = async (file) => {
     let res = await ApiCall.getImageResponse(state.token, file);
-    console.log({reDDds: res});
+    console.log({ reDDds: res });
     var blobFile = new Blob([res.data], { type: "application/pdf" });
     var fileURL = URL.createObjectURL(blobFile);
     console.log("fileURL", fileURL);
@@ -176,7 +176,9 @@ export default function ActionAreaCard({ file }) {
         onClick={() => handleClickOpen(file)}
       >
         {thumbnailImage ? (
-          <CustomImage src={thumbnailImage} alt={file?.attributes.name} />
+          <CustomImage src={thumbnailImage} 
+          // lt={file?.attributes.name}
+           />
         ) : (
           <BoxThumb>
             <CircularProgress />

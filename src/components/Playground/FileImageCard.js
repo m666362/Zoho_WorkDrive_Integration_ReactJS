@@ -19,7 +19,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import ArrowLefttIcon from "@material-ui/icons/ArrowLeft";
-import DescriptionIcon from '@mui/icons-material/Description';
+import DescriptionIcon from "@mui/icons-material/Description";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import axios from "axios";
@@ -35,6 +35,7 @@ import ModalImage from "./ModalImage";
 import useTrackedStore from "../../store/useTrackedStore";
 import ModalFile from "./ModalFile";
 
+import * as ApiCall from "./api/ApiCalling";
 const CustomImage = styled("img")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     width: "200px",
@@ -59,15 +60,15 @@ const BoxThumb = styled("Box")(({ theme }) => ({
     alignItems: "center",
   },
   [theme.breakpoints.up("md")]: {
-    width: "300px",
+    width: "200px",
     height: "170px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   [theme.breakpoints.up("xl")]: {
-    width: "433px",
-    height: "300px",
+    width: "200px",
+    height: "170px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -80,8 +81,8 @@ const useStyles = makeStyles({
   fileroot: {
     border: "2px solid #E0E0E0",
     // padding: 10,
-    // minWidth: 300,
-    // minHeight: 250,
+    minWidth: 200,
+    minHeight: 170,
     borderRadius: "5px",
     "&:hover": {
       boxShadow: "0 0 1px 1px #E0E0E0",
@@ -95,8 +96,8 @@ const useStyles = makeStyles({
     textAlign: "left !important",
   },
   image: {
-    width: "400px",
-    height: "333px",
+    width: "200px",
+    height: "150px",
   },
 });
 
@@ -113,15 +114,15 @@ export default function FileImageCard({ file }) {
   });
 
   const getUserImage = async (file) => {
-    let res = await axios({
-      method: "get",
-      headers: {
-        Accept: "application/vnd.api+json",
-        Authorization: state.token,
-      },
-      responseType: "blob",
-      url: `https://workdrive.zoho.com/api/v1/download/${file?.id}`,
-    });
+    // let res = await axios({
+    //   method: "get",
+    //   headers: {
+    //     Accept: "application/vnd.api+json",
+    //     Authorization: state.token,
+    //   },
+    //   responseType: "blob",
+    //   url: `https://workdrive.zoho.com/api/v1/download/${file?.id}`,
+    // });
     // setTheArray(oldArray => [...oldArray, newElement]);
     // let reader = new window.FileReader();
     // reader.readAsDataURL(res.data);
@@ -137,6 +138,10 @@ export default function FileImageCard({ file }) {
       "file.attributes.thumbnail_url",
       file?.attributes.thumbnail_url
     );
+
+    let res = await ApiCall.getImageResponse("any", file);
+
+    console.log({ res, id: file?.id });
     var file = new Blob([res.data]);
     var fileURL = URL.createObjectURL(file);
     console.log("fileURL", fileURL);
@@ -146,19 +151,20 @@ export default function FileImageCard({ file }) {
   };
 
   React.useEffect(async () => {
-    console.log({
-      url: `https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`,
-    });
-    let resData = await axios({
-      method: "get",
-      headers: {
-        Authorization: state.token,
-      },
-      responseType: "blob",
-      url: `https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`,
-    });
+    // console.log({
+    //   url: `https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`,
+    // });
+    // let resData = await axios({
+    //   method: "get",
+    //   headers: {
+    //     Authorization: state.token,
+    //   },
+    //   responseType: "blob",
+    //   url: `https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`,
+    // });
     // console.log(file);
     // console.log({ ThumbRes: resData });
+    let resData = await ApiCall.getThumbnailData("any", file);
     var blodData = new Blob([resData.data]);
     var urlData = URL.createObjectURL(blodData);
     // console.log({urlData: urlData});
@@ -232,15 +238,20 @@ export default function FileImageCard({ file }) {
           </BoxThumb>
         )} */}
         <BoxThumb>
-            <DescriptionIcon sx={{width: 320, height: 240 }} />
-          </BoxThumb>
+          <DescriptionIcon  />
+        </BoxThumb>
         <br />
-        <div >
+        <div>
           <Typography variant="h6">{file?.attributes.name}</Typography>
           <Typography variant="body1">{file?.attributes.name}</Typography>
         </div>
       </div>
-      <ModalFile open={open} setOpen={setOpen} profileImage={profileImage} file={file} />
+      <ModalFile
+        open={open}
+        setOpen={setOpen}
+        profileImage={profileImage}
+        file={file}
+      />
       <div>
         {/* <Dialog
           fullScreen

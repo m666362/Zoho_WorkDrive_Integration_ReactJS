@@ -4,8 +4,7 @@ import axios from "axios";
 const base_url = `http://192.168.0.107:3005/api/v1/storage/workdrive`;
 
 export const getAccessToken = () => {
-  const URL =
-    "https://www.zohoapis.com/crm/v2/functions/getaccesstoken/actions/execute";
+  const URL = base_url + "/access_token";
 
   return axios(URL, {
     method: "GET",
@@ -41,7 +40,7 @@ export const getFoldersItem = (token, folder_id) => {
 };
 
 export const fileUploader = (token, data, parentId) => {
-  const URL = `${base_url}/v1/upload?parent_id=${parentId}&override-name-exist=true`;
+  const URL = `${base_url}/igmch451bbcad1ac04521b63eb9609ab84b0f/files/upload/notworking`;
 
   return axios
     .post(URL, data, {
@@ -180,7 +179,8 @@ export const moveFile = (token, file, childId) => {
 };
 
 export const getImageResponse = (token, file) => {
-  const URL = `${base_url}/v1/download/${file?.id}`;
+  // const URL = `${base_url}/v1/download/${file?.id}`;
+  const URL = `${base_url}/folder_id/files/${file?.id}/download`;
 
   return axios({
     method: "get",
@@ -199,7 +199,8 @@ export const getImageResponse = (token, file) => {
 };
 
 export const getThumbnailData = (token, file) => {
-  const URL = `https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`;
+  // const URL = `https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`;
+  const URL = `${base_url}/folder_id/files/${file?.id}/thumbnail`;
 
   return axios({
     method: "get",
@@ -209,7 +210,9 @@ export const getThumbnailData = (token, file) => {
     responseType: "blob",
     url: URL,
   })
-    .then((response) => response)
+    .then((response) => {
+      return response;
+    })
     .catch((error) => {
       console.log({ throwError: error });
       // throw error;

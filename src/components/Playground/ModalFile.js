@@ -5,6 +5,7 @@ import { Box } from "@mui/system";
 import useTrackedStore from "../../store/useTrackedStore";
 import { Grid } from "@material-ui/core";
 
+import * as ApiCall from "./api/ApiCalling";
 import Button from "@mui/material/Button";
 import axios from "axios";
 
@@ -47,26 +48,17 @@ function ModalFile({ open, setOpen, profileImage, file }) {
           <Button
             variant="contained"
             sx={{ m: 2 }}
-            onClick={() => {
-              let myUrl = `https://workdrive.zoho.com/api/v1/download/${file.id}`;
-              axios
-                .get(myUrl, {
-                  headers: {
-                    Authorization: state.token,
-                    Accept: "application/vnd.api+json",
-                  },
-                })
-                .then((response) => {
-                  console.log(response.data);
-                  const url = window.URL.createObjectURL(
-                    new Blob([response.data])
-                  );
-                  const link = document.createElement("a");
-                  link.href = url;
-                  link.setAttribute("download", file.attributes.name); //or any other extension
-                  document.body.appendChild(link);
-                  link.click();
-                });
+            onClick={async () => {
+              let response = await ApiCall.getImageResponse("any", file);
+              console.log({ response });
+
+              console.log({ res: response, id: file?.id });
+              const url = window.URL.createObjectURL(new Blob([response.data]));
+              const link = document.createElement("a");
+              link.href = url;
+              link.setAttribute("download", file.attributes.name); //or any other extension
+              document.body.appendChild(link);
+              link.click();
             }}
           >
             Download

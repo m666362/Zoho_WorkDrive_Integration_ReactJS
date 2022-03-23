@@ -242,8 +242,11 @@ export default function CustomSeparator({
                 type="file"
                 name="file"
                 onChange={async (e) => {
+                  console.log({
+                    files: e.target.files
+                  });
                   const data = new FormData();
-                  data.append("content", e.target.files[0]);
+                  data.append("file", e.target.files[0]);
 
                   let response = await ApiCall.fileUploader(
                     state.token,
@@ -251,17 +254,17 @@ export default function CustomSeparator({
                     state.bread.slice(-1)[0].id
                   );
 
-                  let myCustomFile =
-                    FileUploadResponse.makeCustomFile(response);
-                  let myCustomArray = [myCustomFile, ...post];
-                  console.log({ myCustomArray: myCustomArray });
-                  setSnackOpen(true);
-                  state.setApiData(
-                    state.bread[state.bread.length - 1].id,
-                    myCustomArray
-                  );
-                  setPost(myCustomArray);
-                  console.log({ post: post });
+                  // let myCustomFile =
+                  //   FileUploadResponse.makeCustomFile(response);
+                  // let myCustomArray = [myCustomFile, ...post];
+                  // console.log({ myCustomArray: myCustomArray });
+                  // setSnackOpen(true);
+                  // state.setApiData(
+                  //   state.bread[state.bread.length - 1].id,
+                  //   myCustomArray
+                  // );
+                  // setPost(myCustomArray);
+                  // console.log({ post: post });
                 }}
               />
               <IconButton aria-label="upload picture" component="span">

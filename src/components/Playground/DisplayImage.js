@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-  Typography,
-} from "@material-ui/core";
-
-
+import { Typography } from "@material-ui/core";
 
 import * as ApiCall from "./api/ApiCalling";
 import Slide from "@material-ui/core/Slide";
@@ -21,12 +17,12 @@ const CustomImage = styled("img")(({ theme }) => ({
     height: "170px",
   },
   [theme.breakpoints.up("md")]: {
-    width: "300px",
+    width: "200px",
     height: "170px",
   },
   [theme.breakpoints.up("xl")]: {
-    width: "433px",
-    height: "317px",
+    width: "200px",
+    height: "170px",
   },
 }));
 
@@ -60,8 +56,8 @@ const useStyles = makeStyles({
   fileroot: {
     border: "2px solid #E0E0E0",
     // padding: 10,
-    // minWidth: 300,
-    // minHeight: 250,
+    minWidth: 200,
+    minHeight: 170,
     borderRadius: "5px",
     "&:hover": {
       boxShadow: "0 0 1px 1px #E0E0E0",
@@ -78,11 +74,10 @@ const useStyles = makeStyles({
     padding: "0 10px",
   },
   image: {
-    width: "400px",
-    height: "300px",
+    width: "200px",
+    height: "150px",
   },
 });
-
 
 export default function DisplayImage({ file }) {
   const [open, setOpen] = React.useState(false);
@@ -97,8 +92,7 @@ export default function DisplayImage({ file }) {
   });
 
   const getUserImage = async (file) => {
-
-    let res = await ApiCall.getImageResponse(state.token, file)
+    let res = await ApiCall.getImageResponse(state.token, file);
 
     console.log(
       "file.attributes.thumbnail_url",
@@ -116,6 +110,8 @@ export default function DisplayImage({ file }) {
     let resData = await ApiCall.getThumbnailData(state.token, file);
     var blodData = new Blob([resData.data]);
     var urlData = URL.createObjectURL(blodData);
+    
+    console.log( {urlData});
     setThumbnailUrl(urlData);
   }, [file?.attributes.thumbnail_url]);
 
@@ -144,7 +140,7 @@ export default function DisplayImage({ file }) {
           <CustomImage
             src={thumbnailImage}
             // className={classes.image}
-            alt={file?.attributes.name}
+            // alt={file?.attributes.name}
           />
         ) : (
           <BoxThumb>
