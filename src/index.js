@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import CustomPhoto from "./CustomPhoto";
+import Rayhan from "./Rayhan";
 
 ReactDOM.render(
   <App />,

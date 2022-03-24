@@ -102,7 +102,7 @@ export default function DisplayImage({ file }) {
     var fileURL = URL.createObjectURL(file);
     console.log("fileURL", fileURL);
     setProfileImage(fileURL);
-    setLoading(false);
+    setOpen(true);
     // window.open(fileURL);
   };
 
@@ -119,7 +119,8 @@ export default function DisplayImage({ file }) {
     console.log({ file: file });
     state.setLoading(true);
     getUserImage(file);
-    setOpen(true);
+    
+    setLoading(false);
   };
 
   const handleClose = () => {
@@ -153,6 +154,7 @@ export default function DisplayImage({ file }) {
           <Typography variant="body1">{file?.attributes.name}</Typography>
         </div>
       </div>
+      
       <ModalImage open={open} setOpen={setOpen} profileImage={profileImage} />
     </div>
   );

@@ -120,24 +120,11 @@ function Response(props) {
 
   async function setBreadCrumbsUrl(file) {
     if (!state.apiData.hasOwnProperty(file?.id)) {
-      Object.keys(state.apiData).map((i) => console.log(i));
       console.log({ notFound: "id not Found found setBreadCrumbsUrl" });
-
-      // console.log(file.id, ' setBreadCrumbsUrl');
-      // console.log({notFound: 'id not found setBreadCrumbsUrl'});
-      let myUrl = `https://workdrive.zoho.com/api/v1/files/${file?.id}/files`;
       try {
-        const response = await axios.get(myUrl, {
-          headers: {
-            Authorization: state.token,
-            Accept: "application/vnd.api+json",
-          },
-        });
-
-        const myRes = ApiCall.getFoldersItem("any", file?.id);
-        console.log({ myRes });
+        const response = ApiCall.getFoldersItem(state.token, file?.id);
         state.setBreadCrumbsUrl(file);
-        state.setApiData(file.id, response.data.data);
+        state.setApiData(file.id, response.data);
         setPost(response.data.data);
         setSearchVal("");
       } catch (error) {
@@ -226,13 +213,13 @@ function Response(props) {
       try {
         const response = await ApiCall.fileUploader(
           state.token,
-          element,
-          folderId
+          data,
+          state.bread.slice(-1)[0].id
         );
-        console.log({ testPurpose: response });
-        console.log({
-          dataTesting: response.data.data[0].attributes.resource_id,
-        });
+        // console.log({ testPurpose: response });
+        // console.log({
+        //   dataTesting: response.data.data[0].attributes.resource_id,
+        // });
 
         let myCustomFile = FileUploadResponse.makeCustomFile(response);
         myCustomArray.unshift(myCustomFile);

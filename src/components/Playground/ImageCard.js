@@ -126,16 +126,9 @@ export default function ActionAreaCard({ file }) {
   const componentRef = React.useRef();
 
   React.useEffect(async () => {
-    console.log({
-      url: `--https://previewengine-accl.zoho.com/thumbnail/WD/${file?.id}`,
-    });
     let resData = await ApiCall.getThumbnailData(state.token, file);
-    // console.log(file);
-    // console.log({ ThumbRes: resData });
     var blodData = new Blob([resData.data]);
     var urlData = URL.createObjectURL(blodData);
-    // console.log({urlData: urlData});
-    // console.log("fileURL", fileURL);
     setThumbnailUrl(urlData);
   }, [file?.attributes.thumbnail_url]);
 

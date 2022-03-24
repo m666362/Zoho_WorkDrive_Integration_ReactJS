@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import { Box } from "@mui/system";
 import useTrackedStore from "../../store/useTrackedStore";
 import PdfViewer from "./PdfViewer";
+import CloseIcon from "@mui/icons-material/Close";
 
 const style = {
   position: "absolute",
@@ -18,6 +19,15 @@ const style = {
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
+};
+
+const buttonBoxStyle = {
+  position: "absolute",
+  top: "5%",
+  left: "97%",
+  transform: "translate(-50%, -50%)",
+  msTransform: "translate(-50%, -50%)",
+  background: "#ddd",
 };
 
 function ModalPdf({ open, setOpen, profileImage }) {
@@ -37,6 +47,9 @@ function ModalPdf({ open, setOpen, profileImage }) {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
+      <Box sx={buttonBoxStyle}>
+          <CloseIcon  fontSize="large" color="action" cursor="pointer" backgroundColor="red" onClick={handleClose} />
+        </Box>
         <PdfViewer width="100%" alt="" profileImage={profileImage} />
       </Box>
     </Modal>

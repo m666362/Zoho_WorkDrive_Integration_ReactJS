@@ -159,6 +159,10 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen }) {
           <RiPencilLine className="RiPencilLine" />
           <span> Rename </span>
         </MenuItem>
+        <MenuItem data={file} onClick={handleClickOpen}>
+          <RiPencilLine className="RiPencilLine" />
+          <span> Move </span>
+        </MenuItem>
       </ContextMenu>
 
       <Dialog

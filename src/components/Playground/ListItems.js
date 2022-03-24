@@ -18,6 +18,7 @@ import ModalPdf from "./ModalPdf";
 
 import useTrackedStore from "../../store/useTrackedStore";
 import ModalFile from "./ModalFile";
+import ModalImage from "./ModalImage";
 
 const style = {
   position: "absolute",
@@ -128,14 +129,21 @@ function ListItems({ file }) {
       >
         <Box sx={style}>
           {
-            file.attributes.type=="image"?<img width="100%" alt="" src={profileImage} />:""
+            file.attributes.type=="image"? <img width="100%" alt="" src={profileImage} onClick={handleClose}/>:""
           }
           {
             file.attributes.type=="pdf"?<ModalPdf width="100%" alt="" open={open} setOpen={setOpen} profileImage={profileImage}  />:""
           }
           {
-            file.attributes.extn=="rar"?<ModalFile width="100%" alt="" open={open} setOpen={setOpen} profileImage={profileImage} file={file} />:""
+            file.attributes.extn=="rar"?<ModalFile width="100%" alt="" open={open} setOpen={setOpen} profileImage={""} file={file} />:""
           }
+          {
+            file.attributes.extn=="txt"?<ModalFile width="100%" alt="" open={open} setOpen={setOpen} profileImage={""} file={file} />:""
+          }
+          
+          {/* {
+            file.attributes.extn=="image"?<ModalImage width="100%" alt="" open={open} setOpen={setOpen} profileImage={profileImage} />:""
+          } */}
         </Box>
       </Modal>
     </>

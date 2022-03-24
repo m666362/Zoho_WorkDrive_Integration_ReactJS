@@ -28,10 +28,6 @@ export const getFoldersItem = (token, folder_id) => {
 
   return axios(URL, {
     method: "GET",
-    headers: {
-      Authorization: token,
-      Accept: "application/vnd.api+json",
-    },
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -39,8 +35,24 @@ export const getFoldersItem = (token, folder_id) => {
     });
 };
 
+export const createFolder = (token,folder_id, data) => {
+  const URL = `${base_url}/${folder_id}/files`;
+  console.log(URL);
+  return axios
+    .post(URL, data, {
+      headers: {
+        Authorization: token,
+        Accept: "application/vnd.api+json",
+      },
+    })
+    .then((response) => response)
+    .catch((error) => {
+      throw error;
+    });
+};
+
 export const fileUploader = (token, data, parentId) => {
-  const URL = `${base_url}/igmch451bbcad1ac04521b63eb9609ab84b0f/files/upload/notworking`;
+  const URL = `${base_url}/${parentId}/files/upload/notworking`;
 
   return axios
     .post(URL, data, {

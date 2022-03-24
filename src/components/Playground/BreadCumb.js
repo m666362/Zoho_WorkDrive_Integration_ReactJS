@@ -254,17 +254,19 @@ export default function CustomSeparator({
                     state.bread.slice(-1)[0].id
                   );
 
-                  // let myCustomFile =
-                  //   FileUploadResponse.makeCustomFile(response);
-                  // let myCustomArray = [myCustomFile, ...post];
-                  // console.log({ myCustomArray: myCustomArray });
-                  // setSnackOpen(true);
-                  // state.setApiData(
-                  //   state.bread[state.bread.length - 1].id,
-                  //   myCustomArray
-                  // );
-                  // setPost(myCustomArray);
-                  // console.log({ post: post });
+                  let myCustomFile =
+                    FileUploadResponse.makeCustomFile(response);
+                  let myCustomArray = [myCustomFile, ...post];
+                  
+                  console.log({myCustomFile, myCustomArray});
+                  console.log({ myCustomArray: myCustomArray });
+                  setSnackOpen(true);
+                  state.setApiData(
+                    state.bread[state.bread.length - 1].id,
+                    myCustomArray
+                  );
+                  setPost(myCustomArray);
+                  console.log({ post: post });
                 }}
               />
               <IconButton aria-label="upload picture" component="span">
