@@ -30,6 +30,7 @@ function Response(props) {
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
+  let moveId = useRef(null);
 
   useEffect(() => {
     pageRenderCount.current = pageRenderCount.current + 1;
@@ -92,6 +93,39 @@ function Response(props) {
   function handleCloseModal() {
     setOpen(false);
   }
+
+  function moveData(e, data) {
+    state.setId(data?.id);
+    moveId.current = data?.id;
+    // moveId.type = "move";
+    console.log({ moveId });
+  }
+
+  function pasteData(e, data) {
+    if (data?.attributes?.type === "folder" && data?.id !== moveId.current) {
+      ApiCall.moveFile("any", data, moveId.current)
+        .then((res) => {
+          let xArray = post.filter((file) => file.id != moveId.current);
+          setSnackOpen(true);
+          console.log({ xArray });
+          setPost(xArray);
+          state.setApiData(state.bread[state.bread.length - 1].id, xArray);
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+      console.log({ id: moveId.current });
+    }
+  }
+
+  // const moveData = (e, data) => {
+  //   console.log(data?.id);
+  //   state.setPasteChildId(data?.id)
+  // };
+
+  // const pasteData = (e, data) => {
+  //   console.log({id: state.pasteChildId});
+  //   // console.log(data?.id);
+  // };
 
   async function handleClick(file) {
     if (!state.apiData.hasOwnProperty(file?.id)) {
@@ -357,6 +391,8 @@ function Response(props) {
                         setPost={setPost}
                         post={post}
                         setSnackOpen={setSnackOpen}
+                        moveData={moveData}
+                        pasteData={pasteData}
                       />
                     </Grid>
                   );
@@ -386,18 +422,15 @@ function Response(props) {
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                      >
+                      <Grid item xs={12} sm={6} md={4}>
                         <CommonComponent
                           file={file}
                           handleClick={() => handleClick(file)}
                           setPost={setPost}
                           post={post}
                           setSnackOpen={setSnackOpen}
+                          moveData={moveData}
+                          pasteData={pasteData}
                         />
                       </Grid>
                     );
@@ -421,6 +454,8 @@ function Response(props) {
                           setPost={setPost}
                           post={post}
                           setSnackOpen={setSnackOpen}
+                          moveData={moveData}
+                          pasteData={pasteData}
                         />
                       </Grid>
                     );

@@ -31,10 +31,13 @@ const store = (set) => ({
       state.subMenuClicked = subMenuClicked;
     }),
   bread: [{ name: "My Folder", id: "igmch451bbcad1ac04521b63eb9609ab84b0f" }],
+  setRootBread: (id)=> set((state)=>{
+    state.bread =  [{ name: "My Folder", id: id}]
+  }), 
   setBreadCrumbs: (folder) =>
     set((state) => {
       state.bread = [].concat(state.bread, [
-        { name: folder?.attributes.name, id: folder?.id },
+        { name: folder?.attributes?.name, id: folder?.id },
       ]);
     }),
   setBreadCrumbsUrl: (folder) =>
@@ -65,11 +68,21 @@ const store = (set) => ({
     set((state) => {
       state.loading = bool;
     }),
+  id: "",
+  setId: (id) =>
+    set((state) => {
+      state.id = id;
+    }),
   token: "",
   setToken: (data) =>
     set((state) => {
       state.token = data;
     }),
+    userToken: "",
+    setUserToken: (data) =>
+      set((state) => {
+        state.userToken = `Bearer ${data}`;
+      }),
 });
 
 const useStore = create(log(immer(store)));

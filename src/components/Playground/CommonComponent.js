@@ -21,6 +21,10 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { RiPencilLine } from "react-icons/ri";
 
 import { RiSendPlaneFill, RiDeleteBin6Line } from "react-icons/ri";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
+import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+
 import Folder from "./Folder";
 
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
@@ -39,10 +43,11 @@ const useStyles = makeStyles({
   },
 });
 
-function CommonComponent({ file, handleClick, setPost, post, setSnackOpen }) {
+function CommonComponent({ file, handleClick, setPost, post, setSnackOpen, moveData, pasteData }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState(file.attributes.name);
+  const [id, setId] = React.useState("");
   const state = useTrackedStore();
 
   const { handleSubmit, control, reset } = useForm();
@@ -123,6 +128,7 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen }) {
         .then((response) => {
           let xArray = post.filter((file) => file.id != data.id);
           setSnackOpen(true);
+          console.log({xArray});
           setPost(xArray);
           state.setApiData(state.bread[state.bread.length - 1].id, xArray);
           console.log(response);
@@ -133,6 +139,8 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen }) {
         });
     }
   };
+
+  
 
   return (
     // <InputDecider file={file} handleClick={handleClick} />
@@ -159,9 +167,17 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen }) {
           <RiPencilLine className="RiPencilLine" />
           <span> Rename </span>
         </MenuItem>
-        <MenuItem data={file} onClick={handleClickOpen}>
-          <RiPencilLine className="RiPencilLine" />
+        <MenuItem data={file} onClick={moveData}>
+          <ContentCopyIcon className="RiPencilLine" />
+          <span> Copy </span>
+        </MenuItem>
+        <MenuItem data={file} onClick={moveData}>
+          <DriveFileMoveIcon className="RiPencilLine" />
           <span> Move </span>
+        </MenuItem>
+        <MenuItem data={file} onClick={pasteData}>
+          <ContentPasteIcon className="RiPencilLine" />
+          <span> Paste </span>
         </MenuItem>
       </ContextMenu>
 
@@ -292,7 +308,7 @@ const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
           onDrop={(e) => handleDrop(e, file)}
         >
           <Folder
-            icon={<FolderOpenIcon className={classes.icon}/>}
+            icon={<FolderOpenIcon className={classes.icon} />}
             title={file.attributes.name}
             details={file.attributes.created_time_i18}
           />

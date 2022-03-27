@@ -29,6 +29,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.4",
     "bootstrap": "5.1.0",
+    "crypto-js": "^4.1.1",
     "feather-icons-react": "^0.4.3",
     "gulp": "^4.0.2",
     "image-thumbnail": "^1.0.13",
