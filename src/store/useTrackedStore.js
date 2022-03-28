@@ -1,7 +1,6 @@
 import { produce, setAutoFreeze } from "immer";
 import create from "zustand";
 import { createTrackedSelector } from "react-tracked";
-import axios from "axios";
 import { Menuitems } from "../data/data.js";
 
 setAutoFreeze(false);
@@ -30,9 +29,9 @@ const store = (set) => ({
     set((state) => {
       state.subMenuClicked = subMenuClicked;
     }),
-  bread: [{ name: "My Folder", id: "igmch451bbcad1ac04521b63eb9609ab84b0f" }],
+  bread: [{ name: "My Folder", id: "0fx6ef888f9bfcdb040bd9084653db3c65a8c" }],
   setRootBread: (id)=> set((state)=>{
-    state.bread =  [{ name: "My Folder", id: id}]
+    state.bread =  [{ name: "Base Directory", id: id}]
   }), 
   setBreadCrumbs: (folder) =>
     set((state) => {

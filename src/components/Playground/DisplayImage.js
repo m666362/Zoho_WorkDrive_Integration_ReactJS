@@ -92,7 +92,7 @@ export default function DisplayImage({ file }) {
   });
 
   const getUserImage = async (file) => {
-    let res = await ApiCall.getImageResponse(state.token, file);
+    let res = await ApiCall.getImageResponse(state?.token, file);
 
     console.log(
       "file.attributes.thumbnail_url",
@@ -107,7 +107,7 @@ export default function DisplayImage({ file }) {
   };
 
   React.useEffect(async () => {
-    let resData = await ApiCall.getThumbnailData(state.token, file);
+    let resData = await ApiCall.getThumbnailData(state?.token, file);
     var blodData = new Blob([resData.data]);
     var urlData = URL.createObjectURL(blodData);
     

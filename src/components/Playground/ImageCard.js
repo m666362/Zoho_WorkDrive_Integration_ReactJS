@@ -22,7 +22,6 @@ import ArrowLefttIcon from "@material-ui/icons/ArrowLeft";
 
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
-import axios from "axios";
 import { Document, Page } from "react-pdf";
 import {} from "./Response";
 import { useReactToPrint } from "react-to-print";
@@ -126,7 +125,7 @@ export default function ActionAreaCard({ file }) {
   const componentRef = React.useRef();
 
   React.useEffect(async () => {
-    let resData = await ApiCall.getThumbnailData(state.token, file);
+    let resData = await ApiCall.getThumbnailData(state?.token, file);
     var blodData = new Blob([resData.data]);
     var urlData = URL.createObjectURL(blodData);
     setThumbnailUrl(urlData);
@@ -137,7 +136,7 @@ export default function ActionAreaCard({ file }) {
   });
 
   const getUserImage = async (file) => {
-    let res = await ApiCall.getImageResponse(state.token, file);
+    let res = await ApiCall.getImageResponse(state?.token, file);
     console.log({ reDDds: res });
     var blobFile = new Blob([res.data], { type: "application/pdf" });
     var fileURL = URL.createObjectURL(blobFile);

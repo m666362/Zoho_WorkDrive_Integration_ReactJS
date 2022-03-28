@@ -12,7 +12,6 @@ import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
 import { alpha, styled } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import useTrackedStore from "../../store/useTrackedStore";
 import NameDialog from "./NameDialog";
@@ -138,7 +137,7 @@ export default function CustomSeparator({
 
     let myCustomFile = FileUploadResponse.makeCustomFile(response);
 
-    ApiCall.moveFile(state.token, file, childId)
+    ApiCall.moveFile(state?.token, file, childId)
       .then((response) => {
         console.log({ resToBreadCrumb: response.data.data[0] });
         let xArray = post.filter((prop) => prop.id != childId);
@@ -249,7 +248,7 @@ export default function CustomSeparator({
                   data.append("file", e.target.files[0]);
 
                   let response = await ApiCall.fileUploader(
-                    state.token,
+                    state?.token,
                     data,
                     state.bread.slice(-1)[0].id
                   );

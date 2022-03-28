@@ -23,12 +23,28 @@ const useStyles = makeStyles({
   },
 });
 
+function converConncectionMap(connMap) {
+  return {
+    clientId: connMap?.client_id,
+    clientSecret: connMap?.client_secret,
+    authUrl: connMap?.auth_url,
+    refreshUrl: connMap?.refresh_url,
+    refreshToken: connMap?.refresh_token,
+    token_type: connMap?.token_type,
+    connName: connMap?.conn_name,
+    orgId: connMap?.org_id,
+    apiKey: connMap?.api_key,
+  };
+}
+
 const App = () => {
   const classes = useStyles();
   const state = useTrackedStore();
   const [entity, setEntity] = useState("");
   const [entityId, setEntityId] = useState("");
   const [zohoLoaded, setZohoLoaded] = useState(false);
+  const [rootFolderId, setRootFolderId] = useState(null);
+  const [userAccessToken, setUserAccessToken] = useState(null);
   useEffect(() => {
     /*
      * Subscribe to the EmbeddedApp onPageLoad event before initializing
@@ -78,30 +94,15 @@ const App = () => {
       console.log({ connMap });
       const accessokenUrl =
         "https://instafunctions-695631012.development.catalystserverless.com/server/v1/auth/tokens/accesstoken";
-      console.log({
-        clientId: connMap?.client_id,
-        clientSecret: connMap?.client_secret,
-        authUrl: connMap?.auth_url,
-        refreshUrl: connMap?.refresh_url,
-        refreshToken: connMap?.refresh_token,
-        token_type: connMap?.token_type,
-        connName: connMap?.conn_name,
-        orgId: connMap?.org_id,
-        apiKey: connMap?.api_key,
-      });
-      const accessTokenMap = await axios.post(accessokenUrl, {
-        clientId: connMap?.client_id,
-        clientSecret: connMap?.client_secret,
-        authUrl: connMap?.auth_url,
-        refreshUrl: connMap?.refresh_url,
-        refreshToken: connMap?.refresh_token,
-        token_type: connMap?.token_type,
-        connName: connMap?.conn_name,
-        orgId: connMap?.org_id,
-        apiKey: connMap?.api_key,
-      });
+      
+      const accessTokenMap = await axios.post(
+        accessokenUrl,
+        converConncectionMap(connMap)
+      );
       console.log({ accessTokenMap: accessTokenMap?.data?.data?.token });
       const userToken = accessTokenMap?.data?.data?.token;
+      setUserAccessToken(accessTokenMap?.data?.data?.token);
+      state.setToken(accessTokenMap?.data?.data?.token)
       state.setUserToken(userToken);
       const contactMap = await ZOHO.CRM.API.getRecord({
         Entity: entity,
@@ -111,6 +112,11 @@ const App = () => {
           data?.data?.[0]?.[
             settingSchema?.zoho_workdrive__crm_field_for_folder_id?.api_name
           ];
+        setRootFolderId(
+          data?.data?.[0]?.[
+            settingSchema?.zoho_workdrive__crm_field_for_folder_id?.api_name
+          ]
+        );
         console.log({
           data: data?.data?.[0]?.[
             settingSchema?.zoho_workdrive__crm_field_for_folder_id?.api_name
@@ -125,38 +131,38 @@ const App = () => {
         //   id: rootTolderId
         // }
         ApiCall.getFoldersItem(userToken, rootTolderId)
-          .then((res) => console.log({ res }))
+          .then((res) => console.log({ myxRes: res }))
           .catch((err) => {
-            err;
+            console.log({ myxREs: err });
           });
-        let myUrl = `https://workdrive.zoho.com/api/v1/files/${rootTolderId}/files`;
-        axios(myUrl, {
-          method: "GET",
-          headers: {
-            Accept: "application/vnd.api+json",
-            Authorization: `Bearer ${userToken}`,
-          },
-        })
-          .then((response) => console.log(response))
-          .catch((error) => {
-            throw error;
-          });
+        // let myUrl = `https://workdrive.zoho.com/api/v1/files/${rootTolderId}/files`;
+        // axios(myUrl, {
+        //   method: "GET",
+        //   headers: {
+        //     Accept: "application/vnd.api+json",
+        //     Authorization: `Bearer ${userToken}`,
+        //   },
+        // })
+        //   .then((response) => console.log(response))
+        //   .catch((error) => {
+        //     throw error;
+        //   });
         // state.setBreadCrumbs(folder)
         console.log({ bread: state.bread });
       });
     }
   }, [zohoLoaded, entity, entityId]);
 
-  React.useEffect(() => {
-    ApiCall.getAccessToken()
-      .then((res) => {
-        state.setToken(res.access_token);
-        state.setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+  // React.useEffect(() => {
+  //   ApiCall.getAccessToken()
+  //     .then((res) => {
+  //       state.setToken(res.access_token);
+  //       state.setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // });
 
   const customizer = {
     direction: "ltr",
@@ -166,7 +172,7 @@ const App = () => {
   const theme = BuildTheme(customizer);
   return (
     <div className="App">
-      <Response />
+      <Response rootFolderId={rootFolderId} userAccessToken={userAccessToken} />
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={state.loading}

@@ -3,31 +3,15 @@ import axios from "axios";
 // const base_url = `https://workdrive.zoho.com/api`;
 const base_url = `http://192.168.0.107:3005/api/v1/storage/workdrive`;
 
-export const getAccessToken = () => {
-  const URL = base_url + "/access_token";
-
-  return axios(URL, {
-    method: "GET",
-    headers: {
-      "content-type": "application/json", // whatever you want
-    },
-    params: {
-      auth_type: "apikey",
-      zapikey:
-        "1003.3fda4e581ecb2838b2d8959665591777.90fcd8129f39eecb49682e34a3286ae0",
-    },
-  })
-    .then((response) => response.data)
-    .catch((error) => {
-      throw error;
-    });
-};
-
-export const getFoldersItem = (token, folder_id) => {
+export const getFoldersItem = (userAccessToken, folder_id) => {
   const URL = `${base_url}/${folder_id}/files`;
 
   return axios(URL, {
     method: "GET",
+    headers: {
+      Authorization: userAccessToken,
+      Accept: "application/vnd.api+json",
+    },
   })
     .then((response) => response.data)
     .catch((error) => {
@@ -35,7 +19,7 @@ export const getFoldersItem = (token, folder_id) => {
     });
 };
 
-export const createFolder = (token,folder_id, data) => {
+export const createFolder = (token, folder_id, data) => {
   const URL = `${base_url}/${folder_id}/files`;
   console.log(URL);
   return axios

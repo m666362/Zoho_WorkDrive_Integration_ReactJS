@@ -10,7 +10,6 @@ import Modal from "@mui/material/Modal";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
 
 import * as ApiCall from "./api/ApiCalling";
 
@@ -66,7 +65,7 @@ function ListItems({ file }) {
     //   "file.attributes.thumbnail_url",
     //   file?.attributes.thumbnail_url
     // );
-    let res = await ApiCall.getImageResponse("any", file)
+    let res = await ApiCall.getImageResponse(state?.token, file)
     console.log({res, id: file?.id});
     var file = new Blob([res.data]);
     var fileURL = URL.createObjectURL(file);

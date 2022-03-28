@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
-import axios from "axios";
 import CommonComponent from "./CommonComponent";
 import useTrackedStore from "./../../store/useTrackedStore";
 import { Typography } from "@material-ui/core";
@@ -23,6 +22,7 @@ const thumbsContainer = {
 };
 
 function Response(props) {
+  const { rootFolderId, userAccessToken } = props;
   const state = useTrackedStore();
   const pageRenderCount = useRef(0);
   const [post, setPost] = React.useState([]);
@@ -75,16 +75,19 @@ function Response(props) {
 
   useEffect(() => {
     setSearchVal("");
+    if (rootFolderId && state?.token) {
+      ApiCall.getFoldersItem(state?.token, rootFolderId)
+        .then((res) => {
+          setPost(res.data);
+          state.setApiData(rootFolderId, res.data);
 
-    ApiCall.getFoldersItem(state.token, "igmch451bbcad1ac04521b63eb9609ab84b0f")
-      .then((res) => {
-        setPost(res.data);
-        state.setApiData("igmch451bbcad1ac04521b63eb9609ab84b0f", res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [state.token]);
+          state.setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [state?.token, rootFolderId]);
 
   function scriptLoaded() {
     window.A.sort();
@@ -103,7 +106,7 @@ function Response(props) {
 
   function pasteData(e, data) {
     if (data?.attributes?.type === "folder" && data?.id !== moveId.current) {
-      ApiCall.moveFile("any", data, moveId.current)
+      ApiCall.moveFile(state?.token, data, moveId.current)
         .then((res) => {
           let xArray = post.filter((file) => file.id != moveId.current);
           setSnackOpen(true);
@@ -133,7 +136,7 @@ function Response(props) {
       Object.keys(state.apiData).map((i) => console.log(i));
       // console.log(file.id, ' handleClick');
       // console.log({notFound: 'id not found handleClick'});
-      ApiCall.getFoldersItem(state.token, file?.id)
+      ApiCall.getFoldersItem(state?.token, file?.id)
         .then((res) => {
           state.setApiData(file.id, res.data);
           state.setBreadCrumbs(file);
@@ -156,7 +159,7 @@ function Response(props) {
     if (!state.apiData.hasOwnProperty(file?.id)) {
       console.log({ notFound: "id not Found found setBreadCrumbsUrl" });
       try {
-        const response = ApiCall.getFoldersItem(state.token, file?.id);
+        const response = ApiCall.getFoldersItem(state?.token, file?.id);
         state.setBreadCrumbsUrl(file);
         state.setApiData(file.id, response.data);
         setPost(response.data.data);
@@ -246,7 +249,7 @@ function Response(props) {
       // console.log({fileUploading: myUrl});
       try {
         const response = await ApiCall.fileUploader(
-          state.token,
+          state?.token,
           data,
           state.bread.slice(-1)[0].id
         );

@@ -14,8 +14,7 @@ function CustomPhoto(props) {
     axios({
       method: "get",
       headers: {
-        Authorization:
-        "Bearer 1000.9e48c87b518de5a3d9fef8362973986e.30b5ee1816c6e85bc6f180e4f6dcf1fb"
+        Authorization: `Bearer ${state?.token}`
       },
       responseType: "blob",
       url: `http://192.168.0.107:3005/api/v1/storage/workdrive/folder_id/files/bz58aa141943840e948fe852d39d8eb9712b8/thumbnail`,

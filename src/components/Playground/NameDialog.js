@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Button from "@mui/material/Button";
 import SaveIcon from "@mui/icons-material/Create";
 import { useForm, Controller } from "react-hook-form";
@@ -20,7 +19,7 @@ function NameDialog({ open, setOpen, handleClose, setPost, post }) {
   const onSubmit = async (data) => {
     console.log(data, "Create");
     try {
-      const response = await ApiCall.createFolder("any",state?.bread?.slice(-1)?.[0]?.id, {
+      const response = await ApiCall.createFolder(state?.token,state?.bread?.slice(-1)?.[0]?.id, {
         name: data?.name,
       });
 

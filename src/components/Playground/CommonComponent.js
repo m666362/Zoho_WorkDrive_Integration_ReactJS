@@ -53,7 +53,7 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen, moveD
   const { handleSubmit, control, reset } = useForm();
   const onSubmit = (data) => {
     if (file.attributes.type === "folder") {
-      ApiCall.renameFileFolder(state.token, data, file)
+      ApiCall.renameFileFolder(state?.token, data, file)
         .then((response) => {
           let xArray = post.map((file) =>
             file.id !== response.data.data.id ? file : response.data.data
@@ -70,7 +70,7 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen, moveD
           console.log(error);
         });
     } else {
-      ApiCall.renameFile(state.token, data, file)
+      ApiCall.renameFile(state?.token, data, file)
         .then((response) => {
           let xArray = post.map((file) =>
             file.id !== response.data.data.id ? file : response.data.data
@@ -111,7 +111,7 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen, moveD
     // alert(`Coupon code ${data.attributes.name} deleted`);
 
     if (file.attributes.type === "folder") {
-      ApiCall.deleteFileFolder(state.token, data)
+      ApiCall.deleteFileFolder(state?.token, data)
         .then((response) => {
           let xArray = post.filter((file) => file.id != data.id);
           setSnackOpen(true);
@@ -124,7 +124,7 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen, moveD
           console.log(error);
         });
     } else {
-      ApiCall.deleteFile(state.token, data)
+      ApiCall.deleteFile(state?.token, data)
         .then((response) => {
           let xArray = post.filter((file) => file.id != data.id);
           setSnackOpen(true);
@@ -266,7 +266,7 @@ const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
     let myCustomFile = FileUploadResponse.makeCustomFile(response);
     //  previousParent: e.dataTransfer.getData("dropFileParentId"),
     if (childId) {
-      ApiCall.moveFile(state.token, file, childId)
+      ApiCall.moveFile(state?.token, file, childId)
         .then((response) => {
           alert(JSON.stringify(response));
           console.log({ resToBreadCrumb: response });

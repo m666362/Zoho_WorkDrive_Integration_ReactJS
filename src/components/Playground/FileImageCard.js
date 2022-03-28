@@ -22,7 +22,6 @@ import ArrowLefttIcon from "@material-ui/icons/ArrowLeft";
 import DescriptionIcon from "@mui/icons-material/Description";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
-import axios from "axios";
 import { Document, Page } from "react-pdf";
 import { useReactToPrint } from "react-to-print";
 import Box from "@mui/material/Box";
@@ -139,7 +138,7 @@ export default function FileImageCard({ file }) {
       file?.attributes.thumbnail_url
     );
 
-    let res = await ApiCall.getImageResponse("any", file);
+    let res = await ApiCall.getImageResponse(state?.token, file);
 
     console.log({ res, id: file?.id });
     var file = new Blob([res.data]);
@@ -164,7 +163,7 @@ export default function FileImageCard({ file }) {
     // });
     // console.log(file);
     // console.log({ ThumbRes: resData });
-    let resData = await ApiCall.getThumbnailData("any", file);
+    let resData = await ApiCall.getThumbnailData(state?.token, file);
     var blodData = new Blob([resData.data]);
     var urlData = URL.createObjectURL(blodData);
     // console.log({urlData: urlData});

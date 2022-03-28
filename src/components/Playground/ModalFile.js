@@ -7,7 +7,6 @@ import { Grid } from "@material-ui/core";
 
 import * as ApiCall from "./api/ApiCalling";
 import Button from "@mui/material/Button";
-import axios from "axios";
 
 const style = {
   position: "absolute",
@@ -49,7 +48,7 @@ function ModalFile({ open, setOpen, profileImage, file }) {
             variant="contained"
             sx={{ m: 2 }}
             onClick={async () => {
-              let response = await ApiCall.getImageResponse("any", file);
+              let response = await ApiCall.getImageResponse(state?.token, file);
               console.log({ response });
 
               console.log({ res: response, id: file?.id });
