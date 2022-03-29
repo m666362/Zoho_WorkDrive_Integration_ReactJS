@@ -93,6 +93,7 @@ const useStyles = makeStyles({
 });
 
 export default function CustomSeparator({
+  settingId,
   setBreadCrumbsUrl,
   setSearchVal,
   searchVal,
@@ -159,8 +160,33 @@ export default function CustomSeparator({
         console.log({ error: error });
       });
   };
-
-  const myBread = state.bread?.map((file, index) => {
+  // settingId
+  const x = state.settingData?.[settingId]?.breadCrumbs?.map((file, index) => {
+    if (index == state.bread.length - 1) {
+      return (
+        <Typography key="3" color="text.primary">
+          {file.name}
+        </Typography>
+      );
+    } else {
+      return (
+        <Link
+          underline="none"
+          key={index}
+          color="inherit"
+          href="#"
+          id={file?.id}
+          onDrop={(e) => handleDrop(e, file)}
+          onClick={() => {
+            setBreadCrumbsUrl(file);
+          }}
+        >
+          <p>{file.name}</p>
+        </Link>
+      );
+    }
+  });
+  const myBread = state.settingData?.[settingId]?.breadCrumbs?.map((file, index) => {
     if (index == state.bread.length - 1) {
       return (
         <Typography key="3" color="text.primary">

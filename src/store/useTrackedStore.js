@@ -2,6 +2,7 @@ import { produce, setAutoFreeze } from "immer";
 import create from "zustand";
 import { createTrackedSelector } from "react-tracked";
 import { Menuitems } from "../data/data.js";
+import { SettingsSharp } from "@material-ui/icons";
 
 setAutoFreeze(false);
 
@@ -29,10 +30,12 @@ const store = (set) => ({
     set((state) => {
       state.subMenuClicked = subMenuClicked;
     }),
+
   bread: [{ name: "My Folder", id: "0fx6ef888f9bfcdb040bd9084653db3c65a8c" }],
-  setRootBread: (id)=> set((state)=>{
-    state.bread =  [{ name: "Base Directory", id: id}]
-  }), 
+  setRootBread: (id) =>
+    set((state) => {
+      state.bread = [{ name: "Base Directory", id: id }];
+    }),
   setBreadCrumbs: (folder) =>
     set((state) => {
       state.bread = [].concat(state.bread, [
@@ -77,11 +80,71 @@ const store = (set) => ({
     set((state) => {
       state.token = data;
     }),
-    userToken: "",
-    setUserToken: (data) =>
-      set((state) => {
-        state.userToken = `Bearer ${data}`;
-      }),
+  userToken: "",
+  setUserToken: (data) =>
+    set((state) => {
+      state.userToken = `Bearer ${data}`;
+    }),
+  settingData: {},
+  setInitializeData: (settings) =>
+    set((state) => {
+      let tempData = {};
+      settings.forEach((setting) => {
+        tempData[setting?.settingId] = {
+          rootFolderId: setting?.rootFolderId,
+          name: setting?.Name,
+          userAccessToken: setting?.userAccessToken,
+          breadCrumbs: [],
+          previousData: {},
+          listView: true,
+        };
+      });
+      state.settingData = tempData;
+      console.log({ tempData: state.settingData });
+    }),
+  setApiSettingData: (settingId, folder, apiData) =>
+    set((state) => {
+      let folderId = folder?.id ?? folder;
+      state.settingData = {
+        ...state.settingData,
+        [settingId]: {
+          ...state.settingData?.[settingId],
+          previousData: {
+            ...state.settingData?.[settingId].previousData,
+            [folderId]: apiData,
+          },
+          breadCrumbs: [].concat(state.settingData?.[settingId]?.breadCrumbs, [
+            {
+              name: folder?.attributes?.name
+                ? folder.attributes.name
+                : "My Folder",
+              id: folder?.id ? folder.id : folderId,
+            },
+          ]),
+        },
+      };
+
+      console.log({ apiSetsData: state.settingData });
+    }),
+  setBreadCrumbsSettingData: (settingId, folder) =>
+    set((state) => {
+      let my_array = [];
+      for (let i = 0; i < state.settingData?.[settingId].breadCrumbs.length; i++) {
+        const element = state.bread[i];
+        if (element.id != folder.id) my_array.push(element);
+        else {
+          my_array.push(element);
+          break;
+        }
+      }
+      state.settingData = {
+        ...state.settingData,
+        [settingId]: {
+          ...state.settingData?.[settingId],
+          breadCrumbs: my_array
+        },
+      };
+    }),
 });
 
 const useStore = create(log(immer(store)));

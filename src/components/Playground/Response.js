@@ -22,14 +22,13 @@ const thumbsContainer = {
 };
 
 function Response(props) {
-  const { rootFolderId, userAccessToken } = props;
+  const { rootFolderId, userAccessToken, name, settingId } = props;
   const state = useTrackedStore();
   const pageRenderCount = useRef(0);
   const [post, setPost] = React.useState([]);
   const [searchVal, setSearchVal] = React.useState("");
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
   let moveId = useRef(null);
 
   useEffect(() => {
@@ -75,19 +74,38 @@ function Response(props) {
 
   useEffect(() => {
     setSearchVal("");
-    if (rootFolderId && state?.token) {
-      ApiCall.getFoldersItem(state?.token, rootFolderId)
+    if (!state.settingData?.[settingId]?.previousData?.hasOwnProperty(rootFolderId)) {
+      ApiCall.getFoldersItem(userAccessToken, rootFolderId)
         .then((res) => {
           setPost(res.data);
           state.setApiData(rootFolderId, res.data);
-
+          state.setApiSettingData(settingId, rootFolderId, res.data);
           state.setLoading(false);
         })
         .catch((error) => {
           console.log(error);
+          state.setLoading(false);
+          // alert(error)
         });
+    }else{
+      setPost(state.settingData?.[settingId]?.previousData?.[rootFolderId]);
+      state.setApiData(rootFolderId, state.settingData?.[settingId]?.previousData?.[rootFolderId]);
     }
-  }, [state?.token, rootFolderId]);
+
+    // if (rootFolderId && state?.token) {
+
+    //   ApiCall.getFoldersItem(state?.token, rootFolderId)
+    //     .then((res) => {
+    //       setPost(res.data);
+    //       state.setApiData(rootFolderId, res.data);
+
+    //       state.setLoading(false);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
+  }, [userAccessToken, rootFolderId]);
 
   function scriptLoaded() {
     window.A.sort();
@@ -139,6 +157,8 @@ function Response(props) {
       ApiCall.getFoldersItem(state?.token, file?.id)
         .then((res) => {
           state.setApiData(file.id, res.data);
+
+          state.setApiSettingData(settingId, file, res.data);
           state.setBreadCrumbs(file);
           setPost(res.data);
           setSearchVal("");
@@ -156,7 +176,7 @@ function Response(props) {
   }
 
   async function setBreadCrumbsUrl(file) {
-    if (!state.apiData.hasOwnProperty(file?.id)) {
+    if ( !state.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id) ) {
       console.log({ notFound: "id not Found found setBreadCrumbsUrl" });
       try {
         const response = ApiCall.getFoldersItem(state?.token, file?.id);
@@ -171,6 +191,7 @@ function Response(props) {
       Object.keys(state.apiData).map((i) => console.log(i));
       console.log({ idFound: "id found setBreadCrumbsUrl" });
       state.setBreadCrumbsUrl(file);
+      state.setBreadCrumbsSettingData(file);
       setPost(state.apiData[file.id]);
       setSearchVal("");
     }
@@ -338,6 +359,7 @@ function Response(props) {
       </Box>
       <Grid item container>
         <CustomSeparator
+          settingId={settingId}
           setBreadCrumbsUrl={setBreadCrumbsUrl}
           searchVal={searchVal}
           setSearchVal={setSearchVal}
