@@ -299,7 +299,7 @@ const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
       return (
         <Grid
           onClick={() => {
-            handleClick(file ? file : "some");
+            handleClick(file ?? "some");
           }}
           {...inputProps}
           id={file.id}
@@ -310,7 +310,7 @@ const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
           <Folder
             icon={<FolderOpenIcon className={classes.icon} />}
             title={file.attributes.name}
-            details={file.attributes.created_time_i18}
+            details={file.id}
           />
         </Grid>
       );

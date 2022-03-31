@@ -92,6 +92,8 @@ const useStyles = makeStyles({
   },
 });
 
+let myBread = [];
+
 export default function CustomSeparator({
   settingId,
   setBreadCrumbsUrl,
@@ -138,7 +140,11 @@ export default function CustomSeparator({
 
     let myCustomFile = FileUploadResponse.makeCustomFile(response);
 
-    ApiCall.moveFile(state?.token, file, childId)
+    ApiCall.moveFile(
+      state.settingData?.[settingId]?.userAccessToken,
+      file,
+      childId
+    )
       .then((response) => {
         console.log({ resToBreadCrumb: response.data.data[0] });
         let xArray = post.filter((prop) => prop.id != childId);
@@ -146,10 +152,20 @@ export default function CustomSeparator({
         setPost(xArray);
 
         console.log({ fileDotId: file.id });
-        state.setApiData(state.bread[state.bread.length - 1].id, xArray);
-        if (state.apiData[file.id]) {
-          let tempArray = state.apiData[file.id].concat([myCustomFile]);
-          state.setApiData(file.id, tempArray);
+        let lastIndex = state.settingData?.[settingId]?.breadCrumbs?.length - 1;
+        let lastIndexId =
+          state.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+        state.setAddItemSettingData(settingId, lastIndexId, xArray);
+        // state.setApiData(state.bread[state.bread.length - 1].id, xArray);
+        if (
+          state.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+        ) {
+          let tempArray = state.settingData?.[settingId]?.previousData?.[
+            file?.id
+          ].concat([myCustomFile]);
+
+          state.setAddItemSettingData(settingId, file?.id, tempArray);
+          // state.setApiData(file.id, tempArray);
         }
         // console.log({ inner: state.apiData[file.id] });
         e.dataTransfer.setData("dropFile", null);
@@ -160,33 +176,12 @@ export default function CustomSeparator({
         console.log({ error: error });
       });
   };
-  // settingId
-  const x = state.settingData?.[settingId]?.breadCrumbs?.map((file, index) => {
-    if (index == state.bread.length - 1) {
-      return (
-        <Typography key="3" color="text.primary">
-          {file.name}
-        </Typography>
-      );
-    } else {
-      return (
-        <Link
-          underline="none"
-          key={index}
-          color="inherit"
-          href="#"
-          id={file?.id}
-          onDrop={(e) => handleDrop(e, file)}
-          onClick={() => {
-            setBreadCrumbsUrl(file);
-          }}
-        >
-          <p>{file.name}</p>
-        </Link>
-      );
-    }
-  });
-  const myBread = state.settingData?.[settingId]?.breadCrumbs?.map(
+
+  // React.useEffect(() => {
+    
+  // }, [state?.settingData?.[settingId]?.breadCrumbs?.[state?.settingData?.[settingId]?.breadCrumbs?.length-1]?.id]);
+
+  myBread = state.settingData?.[settingId]?.breadCrumbs?.map(
     (file, index) => {
       if (index == state.settingData?.[settingId]?.breadCrumbs?.length - 1) {
         return (
@@ -274,11 +269,14 @@ export default function CustomSeparator({
                   });
                   const data = new FormData();
                   data.append("file", e.target.files[0]);
-
+                  let lastIndex =
+                    state.settingData?.[settingId]?.breadCrumbs?.length - 1;
+                  let lastIndexId =
+                    state.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
                   let response = await ApiCall.fileUploader(
-                    state?.token,
+                    state.settingData?.[settingId]?.userAccessToken,
                     data,
-                    state.bread.slice(-1)[0].id
+                    lastIndexId
                   );
 
                   let myCustomFile =
@@ -288,10 +286,15 @@ export default function CustomSeparator({
                   console.log({ myCustomFile, myCustomArray });
                   console.log({ myCustomArray: myCustomArray });
                   setSnackOpen(true);
-                  state.setApiData(
-                    state.bread[state.bread.length - 1].id,
+                  state.setAddItemSettingData(
+                    settingId,
+                    lastIndexId,
                     myCustomArray
                   );
+                  // state.setApiData(
+                  //   state.bread[state.bread.length - 1].id,
+                  //   myCustomArray
+                  // );
                   setPost(myCustomArray);
                   console.log({ post: post });
                 }}
@@ -324,6 +327,7 @@ export default function CustomSeparator({
       </Grid>
 
       <NameDialog
+        settingId={settingId}
         open={open}
         setOpen={setOpen}
         handleClose={handleClose}

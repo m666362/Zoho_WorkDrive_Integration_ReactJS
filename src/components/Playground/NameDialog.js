@@ -12,23 +12,36 @@ import {
 import "./coupon.css";
 import useTrackedStore from "../../store/useTrackedStore";
 import * as ApiCall from "./api/ApiCalling";
-function NameDialog({ open, setOpen, handleClose, setPost, post }) {
+function NameDialog({ open, setOpen, settingId, handleClose, setPost, post }) {
   const state = useTrackedStore();
   const { handleSubmit, control, reset } = useForm();
 
   const onSubmit = async (data) => {
     console.log(data, "Create");
     try {
-      const response = await ApiCall.createFolder(state?.token,state?.bread?.slice(-1)?.[0]?.id, {
-        name: data?.name,
+      let lastIndex = state.settingData?.[settingId]?.breadCrumbs?.length - 1;
+      let lastIndexId =
+        state.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+      console.log({
+        state: state.settingData?.[settingId],
+        lastIndex,
+        lastIndexId,
       });
+      const response = await ApiCall.createFolder(
+        state.settingData?.[settingId]?.userAccessToken,
+        lastIndexId,
+        {
+          name: data?.name,
+        }
+      );
 
       let myCustomArray = [response.data.data, ...post];
-      console.log({myCustomArray});
+      console.log({ myCustomArray });
       setPost(myCustomArray);
-      state.setApiData(state.bread.slice(-1)[0].id, myCustomArray);
+      state.setAddItemSettingData(settingId, lastIndexId, myCustomArray);
+      // state.setApiData(state.bread.slice(-1)[0].id, myCustomArray);
     } catch (error) {
-      alert(error)
+      alert(error);
     }
 
     setOpen(false);

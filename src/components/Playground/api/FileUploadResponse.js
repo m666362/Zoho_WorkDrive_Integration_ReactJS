@@ -20,7 +20,7 @@ export const makeCustomFile = (response) => {
     if (extention == "png" || extention == "jpg") return "image";
     else if (extention == "pdf") return "pdf";
     else if (extention == "txt") return "doc";
-    else return "";
+    else return "folder";
   }
 
   return {

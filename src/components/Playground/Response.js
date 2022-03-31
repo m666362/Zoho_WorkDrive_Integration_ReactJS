@@ -44,80 +44,30 @@ function Response(props) {
     retrieve: post ?? [],
   });
 
-  // const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-  // useEffect(() => {
-  //   setSearchVal("");
-
-  //   ApiCall.getFoldersItem(state.token, "84vmz6929609281b747e08cf692610413af1b")
-  //     .then((res) => {
-  //       setPost(res.data);
-  //       state.setApiData("84vmz6929609281b747e08cf692610413af1b", res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [state.token]);
-
-  // useEffect(() => {
-  //   setSearchVal("");
-
-  //   ApiCall.getFoldersItem(state.token, "pozgm6f2fd75302dc44b2ae733a74b8b77e87")
-  //     .then((res) => {
-  //       setPost(res.data);
-  //       state.setApiData("pozgm6f2fd75302dc44b2ae733a74b8b77e87", res.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [state.token]);
-
-  useEffect(() => {
+  useEffect(async () => {
     setSearchVal("");
     if (
-      !state.settingData?.[settingId]?.previousData?.hasOwnProperty(
+      !state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
         rootFolderId
       )
     ) {
-      ApiCall.getFoldersItem(userAccessToken, rootFolderId)
-        .then((res) => {
-          setPost(res.data);
-          // state.setApiData(rootFolderId, res.data);
-          state.setApiSettingData(settingId, rootFolderId, res.data);
-          state.setLoading(false);
-        })
-        .catch((error) => {
-          console.log(error);
-          state.setLoading(false);
-          // alert(error)
-        });
+      let res = await ApiCall.getFoldersItem(userAccessToken, rootFolderId);
+      try {
+        setPost(res.data);
+        state?.setApiSettingData(settingId, rootFolderId, res.data);
+        state?.setLoading(false);
+      } catch (error) {
+        console.log({ error });
+      }
     } else {
-      let lastIndex = state.settingData?.[settingId]?.breadCrumbs?.length - 1;
+      let lastIndex = state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
       let lastIndexId =
-        state.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+        state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
       console.log({
-        lastData: state.settingData?.[settingId]?.previousData?.[lastIndexId],
+        lastData: state?.settingData?.[settingId]?.previousData?.[lastIndexId],
       });
-      setPost(state.settingData?.[settingId]?.previousData?.[lastIndexId]);
-      state.setApiData(
-        rootFolderId,
-        state.settingData?.[settingId]?.previousData?.[lastIndexId]
-      );
+      setPost(state?.settingData?.[settingId]?.previousData?.[lastIndexId]);
     }
-
-    // if (rootFolderId && state?.token) {
-
-    //   ApiCall.getFoldersItem(state?.token, rootFolderId)
-    //     .then((res) => {
-    //       setPost(res.data);
-    //       state.setApiData(rootFolderId, res.data);
-
-    //       state.setLoading(false);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
   }, [userAccessToken, rootFolderId, settingId]);
 
   function scriptLoaded() {
@@ -129,7 +79,7 @@ function Response(props) {
   }
 
   function moveData(e, data) {
-    state.setId(data?.id);
+    state?.setId(data?.id);
     moveId.current = data?.id;
     // moveId.type = "move";
     console.log({ moveId });
@@ -143,7 +93,13 @@ function Response(props) {
           setSnackOpen(true);
           console.log({ xArray });
           setPost(xArray);
-          state.setApiData(state.bread[state.bread.length - 1].id, xArray);
+
+          let lastIndex =
+            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+          let lastIndexId =
+            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+
+          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
           console.log(res);
         })
         .catch((err) => console.log(err));
@@ -153,58 +109,79 @@ function Response(props) {
 
   // const moveData = (e, data) => {
   //   console.log(data?.id);
-  //   state.setPasteChildId(data?.id)
+  //   state?.setPasteChildId(data?.id)
   // };
 
   // const pasteData = (e, data) => {
-  //   console.log({id: state.pasteChildId});
+  //   console.log({id: state?.pasteChildId});
   //   // console.log(data?.id);
   // };
 
   useEffect(() => {
     console.log({ universalData: state?.settingData });
-    console.table(state?.settingData?.[settingId]?.breadCrumbs);
   }, [settingId]);
 
   async function handleClick(file) {
+    console.log({
+      file: file?.id,
+      hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+        file?.id
+      ),
+      previous: state?.settingData?.[settingId]?.previousData,
+    });
     if (
-      !state.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+      state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
     ) {
-      console.log({ handleClickNotFound: "id not  found handleClick" });
-      // Object.keys(state.apiData).map((i) => console.log(i));
-      // console.log(file.id, ' handleClick');
-      // console.log({notFound: 'id not found handleClick'});
-      ApiCall.getFoldersItem(userAccessToken, file?.id)
-        .then((res) => {
-          state.setApiSettingData(settingId, file, res.data);
-          setPost(res.data);
-          setSearchVal("");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      // Object.keys(state.apiData).map((i) => console.log(i));
-      console.log({ handleClickIdFound: "id found handleClick" });
-      // state.setBreadCrumbs(file);
-      // setPost(state.apiData[file.id]);
+      console.log({ handleClickIdFound: "id found handleClick", file });
       setSearchVal("");
-      setPost(state.settingData?.[settingId]?.previousData?.[file?.id]);
-      state.setApiSettingData(
+      setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+      state?.setApiSettingData(
         settingId,
         file,
-        state.settingData?.[settingId]?.previousData?.[file?.id]
-      ); //.setBreadCrumbsSettingData(settingId, file);
-      // state.setApiData(rootFolderId, state.settingData?.[settingId]?.previousData?.[rootFolderId]);
+        state?.settingData?.[settingId]?.previousData?.[file?.id]
+      );
+    } else {
+      try {
+        console.log({ handleClickNotFound: "id not  found handleClick", file });
+        let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+        
+        await state?.setApiSettingData(settingId, file, res.data);
+        setPost(res.data);
+        setSearchVal("");
+      } catch (error) {
+        console.log({ error });
+      }
     }
   }
 
   async function setBreadCrumbsUrl(file) {
+    console.log({
+      setBread: {
+        file: file?.id,
+        hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+          file?.id
+        ),
+        settingId: settingId,
+        previous: state?.settingData,
+      },
+    });
     if (
-      !state.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+      state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
     ) {
+      console.log(
+        { setBreadCrumbsUrlFound: "id found setBreadCrumbsUrl" },
+        file
+      );
+      state?.setBreadCrumbsSettingData(settingId, file);
+      setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+      console.log({
+        breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
+      });
+      setSearchVal("");
+    } else {
       console.log({
         setBreadCrumbsUrlNotFount: "id not Found found setBreadCrumbsUrl",
+        file,
       });
       try {
         const response = await ApiCall.getFoldersItem(
@@ -212,29 +189,13 @@ function Response(props) {
           file?.id
         );
 
-        state.setApiSettingData(settingId, file?.id, response.data);
-        // state.setBreadCrumbsUrl(file);
-        // state.setApiData(file.id, response.data);
+        state?.setApiSettingData(settingId, file?.id, response.data);
+        state?.setBreadCrumbsSettingData(settingId, file);
         setPost(response.data);
         setSearchVal("");
       } catch (error) {
         console.log(error);
       }
-    } else {
-      // Object.keys(state.apiData).map((i) => console.log(i));
-      console.log(
-        { setBreadCrumbsUrlFound: "id found setBreadCrumbsUrl" },
-        file
-      );
-      console.log({
-        data: state.settingData?.[settingId]?.previousData?.[file?.id],
-      });
-      // state.setBreadCrumbsUrl(file);
-      state.setBreadCrumbsSettingData(settingId, file);
-      setPost(state.settingData?.[settingId]?.previousData?.[file?.id]);
-      console.log({ breadCrumbs: state.settingData?.[settingId]?.breadCrumbs });
-      // setPost(state.apiData[file.id]);
-      setSearchVal("");
     }
   }
 
@@ -297,10 +258,11 @@ function Response(props) {
   const uploadFile = (folderId) => {
     // Do something with the files
     console.log(files);
-
+    let lastIndex = state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+    let lastIndexId =
+      state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
     var myCustomArray = post;
     files.forEach(async (element, index) => {
-      console.log({ FolderId: state.bread[state.bread.length - 1].id });
       const data = new FormData();
       data.append("file", element);
       // console.warn(element);
@@ -311,19 +273,15 @@ function Response(props) {
       // console.log({fileUploading: myUrl});
       try {
         const response = await ApiCall.fileUploader(
-          state?.token,
+          state?.settingData?.[settingId]?.userAccessToken,
           data,
-          state.bread.slice(-1)[0].id
+          lastIndexId
         );
-        // console.log({ testPurpose: response });
-        // console.log({
-        //   dataTesting: response.data.data[0].attributes.resource_id,
-        // });
 
         let myCustomFile = FileUploadResponse.makeCustomFile(response);
         myCustomArray.unshift(myCustomFile);
         console.log({ myCustomArray: myCustomArray });
-        state.setApiData(state.bread[state.bread.length - 1].id, myCustomArray);
+        state?.setAddItemSettingData(settingId, lastIndexId, myCustomArray);
         setPost(myCustomArray);
         setSnackOpen(true);
         console.log({ post: post });
@@ -369,35 +327,6 @@ function Response(props) {
       justifyContent="center"
       {...getRootProps({ className: "dropzone disabled" })}
     >
-      {/* <div>{JSON.stringify(post??[])}</div> */}
-      {/* <div>
-        <div>{
-          state.bread.map(i => <div>{JSON.stringify(i)}</div>)
-        }</div>
-        <br />
-        <div>{
-          Object.keys(state.apiData).map(i => <div>{JSON.stringify(i)}</div>)
-        }</div>
-        <br />
-        <div>{
-          state.bread[state.bread.length - 1].id
-        }</div></div> */}
-
-      <Box sx={{ display: "none" }}>
-        <div>
-          {state.bread.map((i) => (
-            <div>{JSON.stringify(i)}</div>
-          ))}
-        </div>
-        <br />
-        <div>
-          {Object.keys(state.apiData).map((i) => (
-            <div>{JSON.stringify(i)}</div>
-          ))}
-        </div>
-        <br />
-        <div>{state.bread[state.bread.length - 1].id}</div>
-      </Box>
       <Grid item container>
         <CustomSeparator
           settingId={settingId}
@@ -413,7 +342,7 @@ function Response(props) {
       <input {...getInputProps()} />
       <div style={thumbsContainer}>{thumbs}</div>
 
-      {filteredData.length === 0 && !state.loading && (
+      {filteredData.length === 0 && !state?.loading && (
         <Grid item fullheight justifyContent="center">
           <Typography fullwidth variant="h1" component="div">
             Nothing here!!!
@@ -479,7 +408,7 @@ function Response(props) {
               </Typography>
             )}
 
-            {!state.settingData?.[settingId]?.listView ? (
+            {!state?.settingData?.[settingId]?.listView ? (
               <Grid
                 container
                 spacing={true ? { xs: 2, md: 4 } : {}}
@@ -508,18 +437,18 @@ function Response(props) {
               <Grid
                 container
                 spacing={
-                  state.settingData?.[settingId]?.listView
+                  state?.settingData?.[settingId]?.listView
                     ? { xs: 2, md: 3 }
                     : {}
                 }
                 columns={
-                  state.settingData?.[settingId]?.listView
+                  state?.settingData?.[settingId]?.listView
                     ? { xs: 4, sm: 8, md: 12 }
                     : {}
                 }
-                rowSpacing={state.settingData?.[settingId]?.listView ? 0 : 1}
+                rowSpacing={state?.settingData?.[settingId]?.listView ? 0 : 1}
                 columnSpacing={
-                  state.settingData?.[settingId]?.listView
+                  state?.settingData?.[settingId]?.listView
                     ? {}
                     : { xs: 1, sm: 2, md: 3 }
                 }

@@ -104,8 +104,8 @@ const store = (set) => ({
     }),
   setApiSettingData: (settingId, folder, apiData) =>
     set((state) => {
-      let folderId = folder?.id ?? folder;
-      state.settingData = {
+      let folderId = folder?.id?folder?.id:folder;
+      let tempData = {
         ...state.settingData,
         [settingId]: {
           ...state.settingData?.[settingId],
@@ -118,12 +118,13 @@ const store = (set) => ({
               name: folder?.attributes?.name
                 ? folder.attributes.name
                 : "My Folder",
-              id: folder?.id ? folder.id : folderId,
+              id: folderId,
             },
           ]),
         },
       };
 
+      state.settingData = tempData
       console.log({ apiSetsData: state.settingData });
     }),
   setBreadCrumbsSettingData: (settingId, folder) =>
@@ -152,13 +153,28 @@ const store = (set) => ({
   setViewSettingData: (settingId, bool) =>
     set((state) => {
       console.log({
-        settingId,bool
+        settingId,
+        bool,
       });
       state.settingData = {
         ...state.settingData,
         [settingId]: {
           ...state.settingData?.[settingId],
           listView: bool,
+        },
+      };
+    }),
+  setAddItemSettingData: (settingId, folder, apiData) =>
+    set((state) => {
+      let folderId = folder?.id ?? folder;
+      state.settingData = {
+        ...state.settingData,
+        [settingId]: {
+          ...state.settingData?.[settingId],
+          previousData: {
+            ...state.settingData?.[settingId]?.previousData,
+            [folderId]: apiData,
+          },
         },
       };
     }),
