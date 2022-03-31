@@ -74,11 +74,15 @@ function Response(props) {
 
   useEffect(() => {
     setSearchVal("");
-    if (!state.settingData?.[settingId]?.previousData?.hasOwnProperty(rootFolderId)) {
+    if (
+      !state.settingData?.[settingId]?.previousData?.hasOwnProperty(
+        rootFolderId
+      )
+    ) {
       ApiCall.getFoldersItem(userAccessToken, rootFolderId)
         .then((res) => {
           setPost(res.data);
-          state.setApiData(rootFolderId, res.data);
+          // state.setApiData(rootFolderId, res.data);
           state.setApiSettingData(settingId, rootFolderId, res.data);
           state.setLoading(false);
         })
@@ -87,9 +91,18 @@ function Response(props) {
           state.setLoading(false);
           // alert(error)
         });
-    }else{
-      setPost(state.settingData?.[settingId]?.previousData?.[rootFolderId]);
-      state.setApiData(rootFolderId, state.settingData?.[settingId]?.previousData?.[rootFolderId]);
+    } else {
+      let lastIndex = state.settingData?.[settingId]?.breadCrumbs?.length - 1;
+      let lastIndexId =
+        state.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+      console.log({
+        lastData: state.settingData?.[settingId]?.previousData?.[lastIndexId],
+      });
+      setPost(state.settingData?.[settingId]?.previousData?.[lastIndexId]);
+      state.setApiData(
+        rootFolderId,
+        state.settingData?.[settingId]?.previousData?.[lastIndexId]
+      );
     }
 
     // if (rootFolderId && state?.token) {
@@ -105,7 +118,7 @@ function Response(props) {
     //       console.log(error);
     //     });
     // }
-  }, [userAccessToken, rootFolderId]);
+  }, [userAccessToken, rootFolderId, settingId]);
 
   function scriptLoaded() {
     window.A.sort();
@@ -148,18 +161,22 @@ function Response(props) {
   //   // console.log(data?.id);
   // };
 
+  useEffect(() => {
+    console.log({ universalData: state?.settingData });
+    console.table(state?.settingData?.[settingId]?.breadCrumbs);
+  }, [settingId]);
+
   async function handleClick(file) {
-    if (!state.apiData.hasOwnProperty(file?.id)) {
-      console.log({ notFound: "id found handleClick" });
-      Object.keys(state.apiData).map((i) => console.log(i));
+    if (
+      !state.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+    ) {
+      console.log({ handleClickNotFound: "id not  found handleClick" });
+      // Object.keys(state.apiData).map((i) => console.log(i));
       // console.log(file.id, ' handleClick');
       // console.log({notFound: 'id not found handleClick'});
-      ApiCall.getFoldersItem(state?.token, file?.id)
+      ApiCall.getFoldersItem(userAccessToken, file?.id)
         .then((res) => {
-          state.setApiData(file.id, res.data);
-
           state.setApiSettingData(settingId, file, res.data);
-          state.setBreadCrumbs(file);
           setPost(res.data);
           setSearchVal("");
         })
@@ -167,32 +184,56 @@ function Response(props) {
           console.log(error);
         });
     } else {
-      Object.keys(state.apiData).map((i) => console.log(i));
-      console.log({ idFound: "id found handleClick" });
-      state.setBreadCrumbs(file);
-      setPost(state.apiData[file.id]);
+      // Object.keys(state.apiData).map((i) => console.log(i));
+      console.log({ handleClickIdFound: "id found handleClick" });
+      // state.setBreadCrumbs(file);
+      // setPost(state.apiData[file.id]);
       setSearchVal("");
+      setPost(state.settingData?.[settingId]?.previousData?.[file?.id]);
+      state.setApiSettingData(
+        settingId,
+        file,
+        state.settingData?.[settingId]?.previousData?.[file?.id]
+      ); //.setBreadCrumbsSettingData(settingId, file);
+      // state.setApiData(rootFolderId, state.settingData?.[settingId]?.previousData?.[rootFolderId]);
     }
   }
 
   async function setBreadCrumbsUrl(file) {
-    if ( !state.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id) ) {
-      console.log({ notFound: "id not Found found setBreadCrumbsUrl" });
+    if (
+      !state.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+    ) {
+      console.log({
+        setBreadCrumbsUrlNotFount: "id not Found found setBreadCrumbsUrl",
+      });
       try {
-        const response = ApiCall.getFoldersItem(state?.token, file?.id);
-        state.setBreadCrumbsUrl(file);
-        state.setApiData(file.id, response.data);
-        setPost(response.data.data);
+        const response = await ApiCall.getFoldersItem(
+          userAccessToken,
+          file?.id
+        );
+
+        state.setApiSettingData(settingId, file?.id, response.data);
+        // state.setBreadCrumbsUrl(file);
+        // state.setApiData(file.id, response.data);
+        setPost(response.data);
         setSearchVal("");
       } catch (error) {
         console.log(error);
       }
     } else {
-      Object.keys(state.apiData).map((i) => console.log(i));
-      console.log({ idFound: "id found setBreadCrumbsUrl" });
-      state.setBreadCrumbsUrl(file);
-      state.setBreadCrumbsSettingData(file);
-      setPost(state.apiData[file.id]);
+      // Object.keys(state.apiData).map((i) => console.log(i));
+      console.log(
+        { setBreadCrumbsUrlFound: "id found setBreadCrumbsUrl" },
+        file
+      );
+      console.log({
+        data: state.settingData?.[settingId]?.previousData?.[file?.id],
+      });
+      // state.setBreadCrumbsUrl(file);
+      state.setBreadCrumbsSettingData(settingId, file);
+      setPost(state.settingData?.[settingId]?.previousData?.[file?.id]);
+      console.log({ breadCrumbs: state.settingData?.[settingId]?.breadCrumbs });
+      // setPost(state.apiData[file.id]);
       setSearchVal("");
     }
   }
@@ -411,6 +452,7 @@ function Response(props) {
                   return (
                     <Grid item xs={12} sm={4} md={3}>
                       <CommonComponent
+                        settingId={settingId}
                         file={file}
                         handleClick={() => handleClick(file)}
                         setPost={setPost}
@@ -437,7 +479,7 @@ function Response(props) {
               </Typography>
             )}
 
-            {state.listView ? (
+            {!state.settingData?.[settingId]?.listView ? (
               <Grid
                 container
                 spacing={true ? { xs: 2, md: 4 } : {}}
@@ -449,6 +491,7 @@ function Response(props) {
                     return (
                       <Grid item xs={12} sm={6} md={4}>
                         <CommonComponent
+                          settingId={settingId}
                           file={file}
                           handleClick={() => handleClick(file)}
                           setPost={setPost}
@@ -464,16 +507,29 @@ function Response(props) {
             ) : (
               <Grid
                 container
-                spacing={state.listView ? { xs: 2, md: 3 } : {}}
-                columns={state.listView ? { xs: 4, sm: 8, md: 12 } : {}}
-                rowSpacing={state.listView ? 0 : 1}
-                columnSpacing={state.listView ? {} : { xs: 1, sm: 2, md: 3 }}
+                spacing={
+                  state.settingData?.[settingId]?.listView
+                    ? { xs: 2, md: 3 }
+                    : {}
+                }
+                columns={
+                  state.settingData?.[settingId]?.listView
+                    ? { xs: 4, sm: 8, md: 12 }
+                    : {}
+                }
+                rowSpacing={state.settingData?.[settingId]?.listView ? 0 : 1}
+                columnSpacing={
+                  state.settingData?.[settingId]?.listView
+                    ? {}
+                    : { xs: 1, sm: 2, md: 3 }
+                }
               >
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
                       <Grid item xs={12} md={3}>
                         <CommonComponent
+                          settingId={settingId}
                           file={file}
                           handleClick={() => handleClick(file)}
                           setPost={setPost}

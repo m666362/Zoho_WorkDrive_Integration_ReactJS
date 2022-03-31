@@ -110,7 +110,7 @@ const store = (set) => ({
         [settingId]: {
           ...state.settingData?.[settingId],
           previousData: {
-            ...state.settingData?.[settingId].previousData,
+            ...state.settingData?.[settingId]?.previousData,
             [folderId]: apiData,
           },
           breadCrumbs: [].concat(state.settingData?.[settingId]?.breadCrumbs, [
@@ -129,8 +129,12 @@ const store = (set) => ({
   setBreadCrumbsSettingData: (settingId, folder) =>
     set((state) => {
       let my_array = [];
-      for (let i = 0; i < state.settingData?.[settingId].breadCrumbs.length; i++) {
-        const element = state.bread[i];
+      for (
+        let i = 0;
+        i < state.settingData?.[settingId].breadCrumbs.length - 1;
+        i++
+      ) {
+        const element = state.settingData?.[settingId].breadCrumbs?.[i];
         if (element.id != folder.id) my_array.push(element);
         else {
           my_array.push(element);
@@ -141,7 +145,20 @@ const store = (set) => ({
         ...state.settingData,
         [settingId]: {
           ...state.settingData?.[settingId],
-          breadCrumbs: my_array
+          breadCrumbs: my_array,
+        },
+      };
+    }),
+  setViewSettingData: (settingId, bool) =>
+    set((state) => {
+      console.log({
+        settingId,bool
+      });
+      state.settingData = {
+        ...state.settingData,
+        [settingId]: {
+          ...state.settingData?.[settingId],
+          listView: bool,
         },
       };
     }),

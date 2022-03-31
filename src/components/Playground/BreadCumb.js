@@ -186,31 +186,33 @@ export default function CustomSeparator({
       );
     }
   });
-  const myBread = state.settingData?.[settingId]?.breadCrumbs?.map((file, index) => {
-    if (index == state.bread.length - 1) {
-      return (
-        <Typography key="3" color="text.primary">
-          {file.name}
-        </Typography>
-      );
-    } else {
-      return (
-        <Link
-          underline="none"
-          key={index}
-          color="inherit"
-          href="#"
-          id={file?.id}
-          onDrop={(e) => handleDrop(e, file)}
-          onClick={() => {
-            setBreadCrumbsUrl(file);
-          }}
-        >
-          <p>{file.name}</p>
-        </Link>
-      );
+  const myBread = state.settingData?.[settingId]?.breadCrumbs?.map(
+    (file, index) => {
+      if (index == state.settingData?.[settingId]?.breadCrumbs?.length - 1) {
+        return (
+          <Typography key="3" color="text.primary">
+            {file.name}
+          </Typography>
+        );
+      } else {
+        return (
+          <Link
+            underline="none"
+            key={index}
+            color="inherit"
+            href="#"
+            id={file?.id}
+            onDrop={(e) => handleDrop(e, file)}
+            onClick={() => {
+              setBreadCrumbsUrl(file);
+            }}
+          >
+            <p>{file.name}</p>
+          </Link>
+        );
+      }
     }
-  });
+  );
 
   return (
     <Grid className={classes.grid} item container>
@@ -268,7 +270,7 @@ export default function CustomSeparator({
                 name="file"
                 onChange={async (e) => {
                   console.log({
-                    files: e.target.files
+                    files: e.target.files,
                   });
                   const data = new FormData();
                   data.append("file", e.target.files[0]);
@@ -282,8 +284,8 @@ export default function CustomSeparator({
                   let myCustomFile =
                     FileUploadResponse.makeCustomFile(response);
                   let myCustomArray = [myCustomFile, ...post];
-                  
-                  console.log({myCustomFile, myCustomArray});
+
+                  console.log({ myCustomFile, myCustomArray });
                   console.log({ myCustomArray: myCustomArray });
                   setSnackOpen(true);
                   state.setApiData(
@@ -299,17 +301,19 @@ export default function CustomSeparator({
               </IconButton>
             </label>
             <label>
-              {state.listView ? (
-                <ListIcon
+              {state.settingData?.[settingId]?.listView ? (
+                <GridViewIcon
                   onClick={() => {
-                    state.setListView(false);
+                    state.setViewSettingData(settingId, false);
+                    // state.setListView(true);
                   }}
                   sx={{ cursor: "pointer" }}
                 />
               ) : (
-                <GridViewIcon
+                <ListIcon
                   onClick={() => {
-                    state.setListView(true);
+                    state.setViewSettingData(settingId, true);
+                    // state.setListView(false);
                   }}
                   sx={{ cursor: "pointer" }}
                 />

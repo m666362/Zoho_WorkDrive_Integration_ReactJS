@@ -43,7 +43,7 @@ const useStyles = makeStyles({
   },
 });
 
-function CommonComponent({ file, handleClick, setPost, post, setSnackOpen, moveData, pasteData }) {
+function CommonComponent({ file, handleClick, settingId, setPost, post, setSnackOpen, moveData, pasteData }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState(file.attributes.name);
@@ -146,7 +146,7 @@ function CommonComponent({ file, handleClick, setPost, post, setSnackOpen, moveD
     // <InputDecider file={file} handleClick={handleClick} />
     <>
       <ContextMenuTrigger id={file.id}>
-        {state.listView && file.attributes.type !== "folder" ? (
+        {state.settingData?.[settingId]?.listView && file.attributes.type !== "folder" ? (
           <ListItems file={file} />
         ) : (
           <InputDecider
