@@ -21,9 +21,9 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import { RiPencilLine } from "react-icons/ri";
 
 import { RiSendPlaneFill, RiDeleteBin6Line } from "react-icons/ri";
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove';
-import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DriveFileMoveIcon from "@mui/icons-material/DriveFileMove";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 
 import Folder from "./Folder";
 
@@ -43,7 +43,16 @@ const useStyles = makeStyles({
   },
 });
 
-function CommonComponent({ file, handleClick, settingId, setPost, post, setSnackOpen, moveData, pasteData }) {
+function CommonComponent({
+  file,
+  handleClick,
+  settingId,
+  setPost,
+  post,
+  setSnackOpen,
+  moveData,
+  pasteData,
+}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState(file.attributes.name);
@@ -62,8 +71,13 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
           console.log({ xArray: xArray });
           setSnackOpen(true);
           setPost(xArray);
-          state.setApiData(state.bread[state.bread.length - 1].id, xArray);
-          console.log({ fileNameChangeResponse: response });
+
+          let lastIndex =
+            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+          let lastIndexId =
+            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
+          // state?.setApiSettingData(settingId, lastIndexId, xArray);
         })
         .catch((error) => {
           alert(error);
@@ -79,8 +93,13 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
           console.log({ xArray: xArray });
           setSnackOpen(true);
           setPost(xArray);
-          state.setApiData(state.bread[state.bread.length - 1].id, xArray);
-          console.log({ fileNameChangeResponse: response });
+
+          let lastIndex =
+            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+          let lastIndexId =
+            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
+          // state?.setApiSettingData(settingId, lastIndexId, xArray);
         })
         .catch((error) => {
           alert(error);
@@ -116,8 +135,13 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
           let xArray = post.filter((file) => file.id != data.id);
           setSnackOpen(true);
           setPost(xArray);
-          state.setApiData(state.bread[state.bread.length - 1].id, xArray);
-          console.log(response);
+
+          let lastIndex =
+            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+          let lastIndexId =
+            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
+          // state?.setApiSettingData(settingId, lastIndexId, xArray);
         })
         .catch((error) => {
           alert(error);
@@ -128,10 +152,15 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
         .then((response) => {
           let xArray = post.filter((file) => file.id != data.id);
           setSnackOpen(true);
-          console.log({xArray});
+          console.log({ xArray });
           setPost(xArray);
-          state.setApiData(state.bread[state.bread.length - 1].id, xArray);
-          console.log(response);
+
+          let lastIndex =
+            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+          let lastIndexId =
+            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
+          // state?.setApiSettingData(settingId, lastIndexId, xArray);
         })
         .catch((error) => {
           alert(error);
@@ -140,13 +169,12 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
     }
   };
 
-  
-
   return (
     // <InputDecider file={file} handleClick={handleClick} />
     <>
       <ContextMenuTrigger id={file.id}>
-        {state.settingData?.[settingId]?.listView && file.attributes.type !== "folder" ? (
+        {state.settingData?.[settingId]?.listView &&
+        file.attributes.type !== "folder" ? (
           <ListItems file={file} />
         ) : (
           <InputDecider
@@ -219,7 +247,14 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
 
 export default CommonComponent;
 
-const InputDecider = ({ file, settingId, handleClick, post, setSnackOpen, setPost }) => {
+const InputDecider = ({
+  file,
+  settingId,
+  handleClick,
+  post,
+  setSnackOpen,
+  setPost,
+}) => {
   const classes = useStyles();
   const state = useTrackedStore();
   const handleStart = (e, file) => {
@@ -274,12 +309,19 @@ const InputDecider = ({ file, settingId, handleClick, post, setSnackOpen, setPos
           let xArray = post.filter((file) => file.id != childId);
           setSnackOpen(true);
           setPost(xArray);
-          state.setApiData(state.bread[state.bread.length - 1].id, xArray);
-          if (state.apiData[file.id]) {
-            let tempArray = state.apiData[file.id].concat([myCustomFile]);
-            state.setApiData(file.id, tempArray);
+
+          let lastIndex =
+            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+          let lastIndexId =
+            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
+          // state?.setApiSettingData(settingId, lastIndexId, xArray);
+
+          if (state?.settingData?.[settingId]?.previousData?.[file?.id]) {
+            let tempArray = state?.settingData?.[settingId]?.previousData?.[file?.id].concat([myCustomFile]);
+            state?.setAddItemSettingData(settingId, file?.id, tempArray);
+            // state?.setApiSettingData(settingId, file?.id, tempArray);
           }
-          console.log({ inner: state.apiData[file.id] });
           e.dataTransfer.setData("dropFile", null);
           console.log(response);
         })
@@ -300,7 +342,10 @@ const InputDecider = ({ file, settingId, handleClick, post, setSnackOpen, setPos
       return (
         <Grid
           onClick={() => {
-            handleClick(file , state?.settingData?.[settingId]?.previousData?.[file?.id]);
+            handleClick(
+              file,
+              state?.settingData?.[settingId]?.previousData?.[file?.id]
+            );
           }}
           {...inputProps}
           id={file.id}
