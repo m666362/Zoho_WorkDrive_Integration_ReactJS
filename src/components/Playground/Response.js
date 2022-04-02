@@ -121,30 +121,21 @@ function Response(props) {
     console.log({ universalData: state?.settingData });
   }, [settingId]);
 
-  async function handleClick(file) {
-    console.log({
-      file: file?.id,
-      hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
-        file?.id
-      ),
-      previous: state?.settingData?.[settingId]?.previousData,
-    });
-    if (
-      state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
-    ) {
+  async function handleClick(file, data) {
+    if (data) {
       console.log({ handleClickIdFound: "id found handleClick", file });
       setSearchVal("");
-      setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+      setPost(data);
       state?.setApiSettingData(
         settingId,
         file,
-        state?.settingData?.[settingId]?.previousData?.[file?.id]
+        data
       );
     } else {
       try {
         console.log({ handleClickNotFound: "id not  found handleClick", file });
         let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
-        
+
         await state?.setApiSettingData(settingId, file, res.data);
         setPost(res.data);
         setSearchVal("");
@@ -152,51 +143,89 @@ function Response(props) {
         console.log({ error });
       }
     }
+
+    // console.log({
+    //   file: file?.id,
+    //   hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+    //     file?.id
+    //   ),
+    //   previous: state?.settingData?.[settingId]?.previousData,
+    // });
+    // if (
+    //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+    // ) {
+    //   console.log({ handleClickIdFound: "id found handleClick", file });
+    //   setSearchVal("");
+    //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+    //   state?.setApiSettingData(
+    //     settingId,
+    //     file,
+    //     state?.settingData?.[settingId]?.previousData?.[file?.id]
+    //   );
+    // } else {
+    //   try {
+    //     console.log({ handleClickNotFound: "id not  found handleClick", file });
+    //     let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+
+    //     await state?.setApiSettingData(settingId, file, res.data);
+    //     setPost(res.data);
+    //     setSearchVal("");
+    //   } catch (error) {
+    //     console.log({ error });
+    //   }
+    // }
   }
 
-  async function setBreadCrumbsUrl(file) {
+  async function setBreadCrumbsUrl(file, data) {
+    state?.setBreadCrumbsSettingData(settingId, file);
+    setPost(data);
     console.log({
-      setBread: {
-        file: file?.id,
-        hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
-          file?.id
-        ),
-        settingId: settingId,
-        previous: state?.settingData,
-      },
+      breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
     });
-    if (
-      state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
-    ) {
-      console.log(
-        { setBreadCrumbsUrlFound: "id found setBreadCrumbsUrl" },
-        file
-      );
-      state?.setBreadCrumbsSettingData(settingId, file);
-      setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
-      console.log({
-        breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
-      });
-      setSearchVal("");
-    } else {
-      console.log({
-        setBreadCrumbsUrlNotFount: "id not Found found setBreadCrumbsUrl",
-        file,
-      });
-      try {
-        const response = await ApiCall.getFoldersItem(
-          userAccessToken,
-          file?.id
-        );
+    setSearchVal("");
+    // console.log({
+    //   setBread: {
+    //     data,
+    //     file: file?.id,
+    //     hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+    //       file?.id
+    //     ),
+    //     settingId: settingId,
+    //     previous: state?.settingData,
+    //   },
+    // });
+    // if (
+    //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+    // ) {
+    //   console.log(
+    //     { setBreadCrumbsUrlFound: "id found setBreadCrumbsUrl" },
+    //     file
+    //   );
+    //   state?.setBreadCrumbsSettingData(settingId, file);
+    //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+    //   console.log({
+    //     breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
+    //   });
+    //   setSearchVal("");
+    // } else {
+    //   console.log({
+    //     setBreadCrumbsUrlNotFount: "id not Found found setBreadCrumbsUrl",
+    //     file,
+    //   });
+    //   try {
+    //     const response = await ApiCall.getFoldersItem(
+    //       userAccessToken,
+    //       file?.id
+    //     );
 
-        state?.setApiSettingData(settingId, file?.id, response.data);
-        state?.setBreadCrumbsSettingData(settingId, file);
-        setPost(response.data);
-        setSearchVal("");
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    //     state?.setApiSettingData(settingId, file?.id, response.data);
+    //     state?.setBreadCrumbsSettingData(settingId, file);
+    //     setPost(response.data);
+    //     setSearchVal("");
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
   }
 
   const [files, setFiles] = React.useState([]);
@@ -383,7 +412,7 @@ function Response(props) {
                       <CommonComponent
                         settingId={settingId}
                         file={file}
-                        handleClick={() => handleClick(file)}
+                        handleClick={handleClick}
                         setPost={setPost}
                         post={post}
                         setSnackOpen={setSnackOpen}
@@ -422,7 +451,7 @@ function Response(props) {
                         <CommonComponent
                           settingId={settingId}
                           file={file}
-                          handleClick={() => handleClick(file)}
+                          handleClick={handleClick}
                           setPost={setPost}
                           post={post}
                           setSnackOpen={setSnackOpen}
@@ -460,7 +489,7 @@ function Response(props) {
                         <CommonComponent
                           settingId={settingId}
                           file={file}
-                          handleClick={() => handleClick(file)}
+                          handleClick={handleClick}
                           setPost={setPost}
                           post={post}
                           setSnackOpen={setSnackOpen}

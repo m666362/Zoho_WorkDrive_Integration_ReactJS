@@ -243,36 +243,38 @@ const App = () => {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          {stateSettings.map((setting, index) => {
-            return (
-              <Tab label={setting?.Name ?? "Some"} {...a11yProps(index)} />
-            );
-          }) ?? {}}
+          {stateSettings.length &&
+            stateSettings.map((setting, index) => {
+              return (
+                <Tab label={setting?.Name ?? "Some"} {...a11yProps(index)} />
+              );
+            })}
         </Tabs>
       </Box>
-      {stateSettings.map((setting, index) => {
-        return (
-          <TabPanel value={value} index={index}>
-            <div className="App">
-              <Response
-                rootFolderId={setting?.rootFolderId}
-                userAccessToken={setting?.userAccessToken}
-                name={setting?.Name}
-                settingId={setting?.settingId}
-              />
-              <Backdrop
-                sx={{
-                  color: "#fff",
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
-                }}
-                open={state.loading}
-              >
-                <CircularProgress color="inherit" />
-              </Backdrop>
-            </div>
-          </TabPanel>
-        );
-      }) ?? {}}
+      {stateSettings.length &&
+        stateSettings.map((setting, index) => {
+          return (
+            <TabPanel value={value} index={index}>
+              <div className="App">
+                <Response
+                  rootFolderId={setting?.rootFolderId}
+                  userAccessToken={setting?.userAccessToken}
+                  name={setting?.Name}
+                  settingId={setting?.settingId}
+                />
+                <Backdrop
+                  sx={{
+                    color: "#fff",
+                    zIndex: (theme) => theme.zIndex.drawer + 1,
+                  }}
+                  open={state.loading}
+                >
+                  <CircularProgress color="inherit" />
+                </Backdrop>
+              </div>
+            </TabPanel>
+          );
+        })}
       {/* <TabPanel value={value} index={0}>
         <div className="App">
           <Response

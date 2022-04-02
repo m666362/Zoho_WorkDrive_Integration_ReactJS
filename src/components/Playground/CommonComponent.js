@@ -151,6 +151,7 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
         ) : (
           <InputDecider
             file={file}
+            settingId={settingId}
             handleClick={handleClick}
             post={post}
             setSnackOpen={setSnackOpen}
@@ -218,7 +219,7 @@ function CommonComponent({ file, handleClick, settingId, setPost, post, setSnack
 
 export default CommonComponent;
 
-const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
+const InputDecider = ({ file, settingId, handleClick, post, setSnackOpen, setPost }) => {
   const classes = useStyles();
   const state = useTrackedStore();
   const handleStart = (e, file) => {
@@ -299,7 +300,7 @@ const InputDecider = ({ file, handleClick, post, setSnackOpen, setPost }) => {
       return (
         <Grid
           onClick={() => {
-            handleClick(file ?? "some");
+            handleClick(file , state?.settingData?.[settingId]?.previousData?.[file?.id]);
           }}
           {...inputProps}
           id={file.id}

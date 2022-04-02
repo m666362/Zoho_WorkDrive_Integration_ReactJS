@@ -199,7 +199,7 @@ export default function CustomSeparator({
             id={file?.id}
             onDrop={(e) => handleDrop(e, file)}
             onClick={() => {
-              setBreadCrumbsUrl(file);
+              setBreadCrumbsUrl(file, state?.settingData?.[settingId]?.previousData?.[file?.id]);
             }}
           >
             <p>{file.name}</p>
