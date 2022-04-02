@@ -50,7 +50,7 @@ function CommonComponent({
   setPost,
   post,
   setSnackOpen,
-  moveData,
+  moveCopyData,
   pasteData,
 }) {
   const classes = useStyles();
@@ -196,15 +196,33 @@ function CommonComponent({
           <RiPencilLine className="RiPencilLine" />
           <span> Rename </span>
         </MenuItem>
-        <MenuItem data={file} onClick={moveData}>
+        <MenuItem
+          data={{
+            type: "copy",
+            file: file,
+          }}
+          onClick={moveCopyData}
+        >
           <ContentCopyIcon className="RiPencilLine" />
           <span> Copy </span>
         </MenuItem>
-        <MenuItem data={file} onClick={moveData}>
+        <MenuItem
+          data={{
+            type: "move",
+            file: file,
+          }}
+          onClick={moveCopyData}
+        >
           <DriveFileMoveIcon className="RiPencilLine" />
           <span> Move </span>
         </MenuItem>
-        <MenuItem data={file} onClick={pasteData}>
+        <MenuItem
+          data={{
+            pasteFile: file,
+            pastePost: post,
+          }}
+          onClick={pasteData}
+        >
           <ContentPasteIcon className="RiPencilLine" />
           <span> Paste </span>
         </MenuItem>
@@ -318,7 +336,9 @@ const InputDecider = ({
           // state?.setApiSettingData(settingId, lastIndexId, xArray);
 
           if (state?.settingData?.[settingId]?.previousData?.[file?.id]) {
-            let tempArray = state?.settingData?.[settingId]?.previousData?.[file?.id].concat([myCustomFile]);
+            let tempArray = state?.settingData?.[settingId]?.previousData?.[
+              file?.id
+            ].concat([myCustomFile]);
             state?.setAddItemSettingData(settingId, file?.id, tempArray);
             // state?.setApiSettingData(settingId, file?.id, tempArray);
           }

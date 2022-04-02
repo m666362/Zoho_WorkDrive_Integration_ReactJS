@@ -29,7 +29,8 @@ function Response(props) {
   const [searchVal, setSearchVal] = React.useState("");
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  let moveId = useRef(null);
+  let moveCopyItem = useRef(null);
+  let checker = useRef(0);
 
   useEffect(() => {
     pageRenderCount.current = pageRenderCount.current + 1;
@@ -78,18 +79,49 @@ function Response(props) {
     setOpen(false);
   }
 
-  function moveData(e, data) {
-    state?.setId(data?.id);
-    moveId.current = data?.id;
-    // moveId.type = "move";
-    console.log({ moveId });
+  function moveCopyData(e, data) {
+    moveCopyItem.current = data;
+    // moveCopyItem.type = "move";
+    console.log({ moveCopyItem });
   }
 
-  function pasteData(e, data) {
-    if (data?.attributes?.type === "folder" && data?.id !== moveId.current) {
-      ApiCall.moveFile(state?.token, data, moveId.current)
+  async function pasteData(e, data) {
+    if (
+      moveCopyItem?.current?.type &&
+      moveCopyItem?.current?.file?.id !== data?.id &&
+      data?.pasteFile?.attributes?.type === "folder"
+    ) {
+      console.log("Paste True");
+      console.log(data?.pasteFile?.id); // pastePost
+      if (moveCopyItem?.current?.type==="copy") {
+        if (state.settingData?.[settingId]?.previousData?.[data?.pasteFile?.id]) {
+          console.log("Copy Folder exist in state");
+        }else{
+          console.log("Copy Folder doesn't exist");
+        }
+      }else if (moveCopyItem?.current?.type==="move") {
+        const res = await ApiCall.moveFile(userAccessToken, data?.pasteFile, moveCopyItem?.current?.file?.id);
+        let xArray = data?.pastePost?.filter((file) => file.id != moveCopyItem?.current?.file?.id);
+        setSnackOpen(true);
+        if (state.settingData?.[settingId]?.previousData?.[data?.pasteFile?.id]) {
+          console.log("Move Folder exist in state");
+        }else{
+          console.log("Move Folder doesn't exist");
+        }
+      }
+
+      // if (data?.id === lastIndexId) {
+      //   console.log("Same dir");
+      // } else {
+      //   console.log("Different Dir");
+      // }
+    } else {
+      console.log("Paste false");
+    }
+    if (false) {
+      ApiCall.moveFile(state?.token, data, moveCopyItem.current)
         .then((res) => {
-          let xArray = post.filter((file) => file.id != moveId.current);
+          let xArray = post.filter((file) => file.id != moveCopyItem.current);
           setSnackOpen(true);
           console.log({ xArray });
           setPost(xArray);
@@ -103,11 +135,11 @@ function Response(props) {
           console.log(res);
         })
         .catch((err) => console.log(err));
-      console.log({ id: moveId.current });
+      console.log({ id: moveCopyItem.current });
     }
   }
 
-  // const moveData = (e, data) => {
+  // const moveCopyData = (e, data) => {
   //   console.log(data?.id);
   //   state?.setPasteChildId(data?.id)
   // };
@@ -118,25 +150,23 @@ function Response(props) {
   // };
 
   useEffect(() => {
-    console.log({ universalData: state?.settingData });
-  }, [settingId]);
+    console.log({ XXXapiSetsDataXXX: state?.settingData });
+  }, [checker.current]);
 
   async function handleClick(file, data) {
     if (data) {
       console.log({ handleClickIdFound: "id found handleClick", file });
+      checker.current = checker.current + 1; 
       setSearchVal("");
       setPost(data);
-      state?.setApiSettingData(
-        settingId,
-        file,
-        data
-      );
+      state?.setApiSettingData(settingId, file, data);
     } else {
       try {
         console.log({ handleClickNotFound: "id not  found handleClick", file });
         let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+        checker.current = checker.current + 1; 
 
-        await state?.setApiSettingData(settingId, file, res.data);
+        state?.setApiSettingData(settingId, file, res.data);
         setPost(res.data);
         setSearchVal("");
       } catch (error) {
@@ -416,7 +446,7 @@ function Response(props) {
                         setPost={setPost}
                         post={post}
                         setSnackOpen={setSnackOpen}
-                        moveData={moveData}
+                        moveCopyData={moveCopyData}
                         pasteData={pasteData}
                       />
                     </Grid>
@@ -455,7 +485,7 @@ function Response(props) {
                           setPost={setPost}
                           post={post}
                           setSnackOpen={setSnackOpen}
-                          moveData={moveData}
+                          moveCopyData={moveCopyData}
                           pasteData={pasteData}
                         />
                       </Grid>
@@ -493,7 +523,7 @@ function Response(props) {
                           setPost={setPost}
                           post={post}
                           setSnackOpen={setSnackOpen}
-                          moveData={moveData}
+                          moveCopyData={moveCopyData}
                           pasteData={pasteData}
                         />
                       </Grid>
