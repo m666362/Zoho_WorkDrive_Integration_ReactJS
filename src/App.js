@@ -16,6 +16,8 @@ import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import TabPanel from "./components/Playground/TabPanel";
+import SettingResponse from "./components/Playground/SettingResponse";
+import MyRes from "./components/Playground/MyRes";
 
 const ZOHO = window.ZOHO;
 
@@ -64,6 +66,25 @@ const App = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // async function handleClick(file, data) {
+  //   if (data) {
+  //     console.log({ handleClickIdFound: "id found handleClick", file });
+  //     setPost(data);
+  //     state?.setApiSettingData(settingId, file, data);
+  //   } else {
+  //     try {
+  //       console.log({ handleClickNotFound: "id not  found handleClick", file });
+  //       let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+
+  //       state?.setApiSettingData(settingId, file, res.data);
+  //       setPost(res.data);
+  //       setSearchVal("");
+  //     } catch (error) {
+  //       console.log({ error });
+  //     }
+  //   }
+  // }
 
   useEffect(() => {
     /*
@@ -251,11 +272,11 @@ const App = () => {
             })}
         </Tabs>
       </Box>
-      {stateSettings.length &&
+      {stateSettings.length > 0 &&
         stateSettings.map((setting, index) => {
           return (
             <TabPanel value={value} index={index}>
-              <div className="App">
+              {/* <div className="App">
                 <Response
                   rootFolderId={setting?.rootFolderId}
                   userAccessToken={setting?.userAccessToken}
@@ -271,6 +292,14 @@ const App = () => {
                 >
                   <CircularProgress color="inherit" />
                 </Backdrop>
+              </div> */}
+              <div className="App">
+                <MyRes
+                  rootFolderId={setting?.rootFolderId}
+                  userAccessToken={setting?.userAccessToken}
+                  name={setting?.Name}
+                  settingId={setting?.settingId}
+                />
               </div>
             </TabPanel>
           );

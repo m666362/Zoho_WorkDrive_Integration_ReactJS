@@ -22,19 +22,14 @@ const thumbsContainer = {
 };
 
 function Response(props) {
-  const { rootFolderId, userAccessToken, name, settingId } = props;
+  // const { rootFolderId, userAccessToken, name, settingId} = props;
+  const { rootFolderId, userAccessToken, name, settingId, post, setPost, searchVal, setSearchVal, handleClick } = props;
   const state = useTrackedStore();
-  const pageRenderCount = useRef(0);
-  const [post, setPost] = React.useState([]);
-  const [searchVal, setSearchVal] = React.useState("");
+  // const [post, setPost] = React.useState([]);
+  // const [searchVal, setSearchVal] = React.useState("");
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   let moveCopyItem = useRef(null);
-  let checker = useRef(0);
-
-  useEffect(() => {
-    pageRenderCount.current = pageRenderCount.current + 1;
-  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,34 +37,34 @@ function Response(props) {
 
   const { filteredData, loading } = useTableSearch({
     searchVal,
-    retrieve: post ?? [],
+    retrieve: post,
   });
 
-  useEffect(async () => {
-    setSearchVal("");
-    if (
-      !state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
-        rootFolderId
-      )
-    ) {
-      let res = await ApiCall.getFoldersItem(userAccessToken, rootFolderId);
-      try {
-        setPost(res.data);
-        state?.setApiSettingData(settingId, rootFolderId, res.data);
-        state?.setLoading(false);
-      } catch (error) {
-        console.log({ error });
-      }
-    } else {
-      let lastIndex = state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
-      let lastIndexId =
-        state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
-      console.log({
-        lastData: state?.settingData?.[settingId]?.previousData?.[lastIndexId],
-      });
-      setPost(state?.settingData?.[settingId]?.previousData?.[lastIndexId]);
-    }
-  }, [userAccessToken, rootFolderId, settingId]);
+  // useEffect(async () => {
+  //   setSearchVal("");
+  //   if (
+  //     !state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+  //       rootFolderId
+  //     )
+  //   ) {
+  //     let res = await ApiCall.getFoldersItem(userAccessToken, rootFolderId);
+  //     try {
+  //       setPost(res.data);
+  //       state?.setApiSettingData(settingId, rootFolderId, res.data);
+  //       state?.setLoading(false);
+  //     } catch (error) {
+  //       console.log({ error });
+  //     }
+  //   } else {
+  //     let lastIndex = state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+  //     let lastIndexId =
+  //       state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+  //     console.log({
+  //       lastData: state?.settingData?.[settingId]?.previousData?.[lastIndexId],
+  //     });
+  //     setPost(state?.settingData?.[settingId]?.previousData?.[lastIndexId]);
+  //   }
+  // }, [userAccessToken, rootFolderId, settingId]);
 
   function scriptLoaded() {
     window.A.sort();
@@ -86,13 +81,15 @@ function Response(props) {
   }
 
   async function pasteData(e, data) {
+    
+    console.log({previous: state.settingData?.[settingId], moveItem: moveCopyItem?.current, Des: data}); // pastePost
     if (
       moveCopyItem?.current?.type &&
-      moveCopyItem?.current?.file?.id !== data?.id &&
+      moveCopyItem?.current?.file?.id !== data?.pasteFile?.id &&
       data?.pasteFile?.attributes?.type === "folder"
     ) {
       console.log("Paste True");
-      console.log(data?.pasteFile?.id); // pastePost
+      console.log(state.settingData?.[settingId]); // pastePost
       if (moveCopyItem?.current?.type==="copy") {
         if (state.settingData?.[settingId]?.previousData?.[data?.pasteFile?.id]) {
           console.log("Copy Folder exist in state");
@@ -100,9 +97,26 @@ function Response(props) {
           console.log("Copy Folder doesn't exist");
         }
       }else if (moveCopyItem?.current?.type==="move") {
-        const res = await ApiCall.moveFile(userAccessToken, data?.pasteFile, moveCopyItem?.current?.file?.id);
-        let xArray = data?.pastePost?.filter((file) => file.id != moveCopyItem?.current?.file?.id);
-        setSnackOpen(true);
+        // const res = await ApiCall.moveFile(userAccessToken, data?.pasteFile, moveCopyItem?.current?.file?.id);
+        // let xArray = post?.filter((file) => file.id != moveCopyItem?.current?.file?.id);
+
+        let parent_id = moveCopyItem?.current?.file?.attributes?.parent_id;
+        let filteredData = state.settingData?.[settingId]?.previousData?.[parent_id]
+        filteredData = filteredData?.filter((file) => file?.id != moveCopyItem?.current?.file?.id);
+
+        // let destinationData = state.settingData?.[settingId]?.previousData?.[data?.pasteFile?.id]
+        // destinationData = [moveCopyItem?.current?.file, ...destinationData];
+
+        // setPost(xArray);
+        // setSnackOpen(true);
+        // state.setAddItemSettingData(settingId, moveCopyItem?.current?.file?.attributes?.parent_id, filteredData)
+        // state.setAddItemSettingData(settingId, data?.pasteFile?.id, destinationData)
+        console.log({
+          parent_id,
+          filteredData,
+
+        });
+
         if (state.settingData?.[settingId]?.previousData?.[data?.pasteFile?.id]) {
           console.log("Move Folder exist in state");
         }else{
@@ -151,79 +165,80 @@ function Response(props) {
 
   useEffect(() => {
     console.log({ XXXapiSetsDataXXX: state?.settingData });
-  }, [checker.current]);
+  }, );
 
-  async function handleClick(file, data) {
-    if (data) {
-      console.log({ handleClickIdFound: "id found handleClick", file });
-      checker.current = checker.current + 1; 
-      setSearchVal("");
-      setPost(data);
-      state?.setApiSettingData(settingId, file, data);
-    } else {
-      try {
-        console.log({ handleClickNotFound: "id not  found handleClick", file });
-        let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
-        checker.current = checker.current + 1; 
+  // async function handleClick(file, data) {
+  //   if (data) {
+  //     console.log({ handleClickIdFound: "id found handleClick", file });
+  //     checker.current = checker.current + 1; 
+  //     setSearchVal("");
+  //     state?.setApiSettingData(settingId, file, data);
+  //     setPost(data);
+  //   } else {
+  //     try {
+  //       console.log({ handleClickNotFound: "id not  found handleClick", file });
+  //       let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+  //       checker.current = checker.current + 1; 
 
-        state?.setApiSettingData(settingId, file, res.data);
-        setPost(res.data);
-        setSearchVal("");
-      } catch (error) {
-        console.log({ error });
-      }
-    }
+  //       state?.setApiSettingData(settingId, file, res.data);
+  //       setPost(res.data);
+  //       setSearchVal("");
+  //     } catch (error) {
+  //       console.log({ error });
+  //     }
+  //   }
 
-    // console.log({
-    //   file: file?.id,
-    //   hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
-    //     file?.id
-    //   ),
-    //   previous: state?.settingData?.[settingId]?.previousData,
-    // });
-    // if (
-    //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
-    // ) {
-    //   console.log({ handleClickIdFound: "id found handleClick", file });
-    //   setSearchVal("");
-    //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
-    //   state?.setApiSettingData(
-    //     settingId,
-    //     file,
-    //     state?.settingData?.[settingId]?.previousData?.[file?.id]
-    //   );
-    // } else {
-    //   try {
-    //     console.log({ handleClickNotFound: "id not  found handleClick", file });
-    //     let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+  //   // console.log({
+  //   //   file: file?.id,
+  //   //   hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+  //   //     file?.id
+  //   //   ),
+  //   //   previous: state?.settingData?.[settingId]?.previousData,
+  //   // });
+  //   // if (
+  //   //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+  //   // ) {
+  //   //   console.log({ handleClickIdFound: "id found handleClick", file });
+  //   //   setSearchVal("");
+  //   //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+  //   //   state?.setApiSettingData(
+  //   //     settingId,
+  //   //     file,
+  //   //     state?.settingData?.[settingId]?.previousData?.[file?.id]
+  //   //   );
+  //   // } else {
+  //   //   try {
+  //   //     console.log({ handleClickNotFound: "id not  found handleClick", file });
+  //   //     let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
 
-    //     await state?.setApiSettingData(settingId, file, res.data);
-    //     setPost(res.data);
-    //     setSearchVal("");
-    //   } catch (error) {
-    //     console.log({ error });
-    //   }
-    // }
-  }
+  //   //     await state?.setApiSettingData(settingId, file, res.data);
+  //   //     setPost(res.data);
+  //   //     setSearchVal("");
+  //   //   } catch (error) {
+  //   //     console.log({ error });
+  //   //   }
+  //   // }
+  // }
 
   async function setBreadCrumbsUrl(file, data) {
     state?.setBreadCrumbsSettingData(settingId, file);
-    setPost(data);
+    setPost(data); 
     console.log({
       breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
     });
     setSearchVal("");
-    // console.log({
-    //   setBread: {
-    //     data,
-    //     file: file?.id,
-    //     hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
-    //       file?.id
-    //     ),
-    //     settingId: settingId,
-    //     previous: state?.settingData,
-    //   },
-    // });
+    console.log({
+      setBread: {
+        data,
+        file: file?.id,
+        hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+          file?.id
+        ),
+        settingId: settingId,
+        previous: state?.settingData,
+      },
+    });
+
     // if (
     //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
     // ) {
@@ -386,7 +401,20 @@ function Response(props) {
       justifyContent="center"
       {...getRootProps({ className: "dropzone disabled" })}
     >
-      <Grid item container>
+      {/* <Grid item container>
+        <CustomSeparator
+          settingId={settingId}
+          setBreadCrumbsUrl={setBreadCrumbsUrl}
+          searchVal={searchVal}
+          setSearchVal={setSearchVal}
+          handleClickOpen={handleClickOpen}
+          setPost={setPost}
+          post={post}
+          setSnackOpen={setSnackOpen}
+        />
+      </Grid> */}
+      {filteredData && !state?.loading && (
+        <Grid item container>
         <CustomSeparator
           settingId={settingId}
           setBreadCrumbsUrl={setBreadCrumbsUrl}
@@ -398,6 +426,7 @@ function Response(props) {
           setSnackOpen={setSnackOpen}
         />
       </Grid>
+      )}
       <input {...getInputProps()} />
       <div style={thumbsContainer}>{thumbs}</div>
 

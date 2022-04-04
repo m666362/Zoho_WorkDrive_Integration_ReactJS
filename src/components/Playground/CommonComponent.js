@@ -222,6 +222,7 @@ function CommonComponent({
             pastePost: post,
           }}
           onClick={pasteData}
+          
         >
           <ContentPasteIcon className="RiPencilLine" />
           <span> Paste </span>

@@ -111,7 +111,7 @@ const store = (set) => ({
           ...state.settingData?.[settingId],
           previousData: {
             ...state.settingData?.[settingId]?.previousData,
-            [folderId]: apiData,
+            [folderId]: [...apiData],
           },
           breadCrumbs: [].concat(state.settingData?.[settingId]?.breadCrumbs, [
             {
