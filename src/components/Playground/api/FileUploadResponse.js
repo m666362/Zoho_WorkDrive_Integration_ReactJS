@@ -295,3 +295,14 @@ export const makeCustomFile = (response) => {
     },
   };
 };
+
+export const changeParent = (file, parent_id) => {
+  file.attributes.destination_id = parent_id;
+  file.attributes.parent_id = parent_id;
+  file.attributes.library_id = parent_id;
+  console.log({
+    fileFromRes: file,
+    parent_id
+  });
+  return file;
+};

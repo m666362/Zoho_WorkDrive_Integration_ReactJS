@@ -200,6 +200,7 @@ function CommonComponent({
           data={{
             type: "copy",
             file: file,
+            parentFiles: post,
           }}
           onClick={moveCopyData}
         >
@@ -210,6 +211,7 @@ function CommonComponent({
           data={{
             type: "move",
             file: file,
+            parentFiles: post,
           }}
           onClick={moveCopyData}
         >
@@ -219,13 +221,23 @@ function CommonComponent({
         <MenuItem
           data={{
             pasteFile: file,
-            pastePost: post,
+            pastePost:
+              state?.settingData?.[settingId]?.previousData?.[file?.id],
           }}
           onClick={pasteData}
-          
         >
           <ContentPasteIcon className="RiPencilLine" />
           <span> Paste </span>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            console.log({
+              file: file,
+            });
+          }}
+        >
+          <ContentPasteIcon className="RiPencilLine" />
+          <span> Details </span>
         </MenuItem>
       </ContextMenu>
 

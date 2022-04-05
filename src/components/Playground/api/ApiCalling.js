@@ -174,6 +174,33 @@ export const moveFile = (token, file, childId) => {
     });
 };
 
+
+export const copyFile = (token, file, childId) => {
+  // const URL = `${base_url}/v1/files`;
+  // /:folder_id/files/move/:file_id
+  // req.body.destination_id,
+  const URL = `${base_url}/folderId/files/copy/${childId}`;
+
+  return axios
+    .post(
+      URL,
+      {
+        destination_id: file.id,
+      },
+      {
+        headers: {
+          Authorization: token,
+          Accept: "application/vnd.api+json",
+        },
+      }
+    )
+    .then((response) => response)
+    .catch((error) => {
+      console.log({ throwError: error });
+      // throw error;
+    });
+};
+
 export const getImageResponse = (token, file) => {
   // const URL = `${base_url}/v1/download/${file?.id}`;
   const URL = `${base_url}/folder_id/files/${file?.id}/download`;
