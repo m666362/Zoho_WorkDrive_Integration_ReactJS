@@ -370,7 +370,7 @@ function Response(props) {
               {filteredData?.map((file, index) => {
                 if (file.attributes.type == "folder")
                   return (
-                    <Grid item xs={6} sm={4} md={3} lg={2}>
+                    <Grid item xs={6} sm={4} md={3} lg={2} >
                       <CommonComponent
                         settingId={settingId}
                         file={file}
@@ -410,7 +410,7 @@ function Response(props) {
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={6} sm={4} md={3} lg={2}>
+                      <Grid item xs={6} sm={4} md={3} lg={2} sx={{ cursor: "pointer" }}>
                         <CommonComponent
                           settingId={settingId}
                           file={file}
@@ -444,7 +444,7 @@ function Response(props) {
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={6} sm={4} md={3} lg={2}>
+                      <Grid item xs={6} sm={4} md={3} lg={2} sx={{ cursor: "pointer" }}>
                         <CommonComponent
                           settingId={settingId}
                           file={file}

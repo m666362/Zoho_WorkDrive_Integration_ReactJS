@@ -127,10 +127,10 @@ function ListItems({ file }) {
         }}
       >
         <Grid item>
-          <Avatar sx={{ width: 36, height: 36, mr: 2}}>{file?.attributes.extn}</Avatar>
+          <Avatar sx={{ width: 25, height: 25, mr: 2}}>{file?.attributes.extn}</Avatar>
         </Grid>
         <Grid item xs>
-          <Typography>{file?.attributes?.name?.length<=20?file?.attributes?.name:`${file?.attributes?.name.substr(0, 20)}...`}</Typography>
+          <Typography>{file?.attributes?.name?.length<=14?file?.attributes?.name:`${file?.attributes?.name.substr(0, 14)}...`}</Typography>
         </Grid>
       </Item>
 
@@ -150,13 +150,16 @@ function ListItems({ file }) {
           {
             file.attributes.type=="pdf"?<ModalPdf width="100%" alt="" open={open} setOpen={setOpen} profileImage={profileImage}  />:""
           }
-          {
+          {/* {
             file.attributes.extn=="rar"?<ModalFile width="100%" alt="" open={open} setOpen={setOpen} profileImage={""} file={file} />:""
           }
           {
             file.attributes.extn=="txt"?<ModalFile width="100%" alt="" open={open} setOpen={setOpen} profileImage={""} file={file} />:""
-          }
+          } */}
           
+          {
+            file.attributes.type!=="image" && file.attributes.type!=="pdf"?<ModalFile width="100%" alt="" open={open} setOpen={setOpen} profileImage={""} file={file} />:""
+          }
           {/* {
             file.attributes.extn=="image"?<ModalImage width="100%" alt="" open={open} setOpen={setOpen} profileImage={profileImage} />:""
           } */}

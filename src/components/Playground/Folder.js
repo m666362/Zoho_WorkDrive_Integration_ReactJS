@@ -37,7 +37,7 @@ function Folder({ icon, title, details }) {
       </Grid>
       <Grid item lg={10}>
         <Item className={classes.item} elevation={0}>
-          <Typography variant="h6">{ title.length<14?title:`${title.substr(0, 14)}...`}</Typography>
+          <Typography variant="h6">{ title.length<=12?title:`${title.substr(0, 12)}...`}</Typography>
         </Item>
       </Grid>
     </Grid>

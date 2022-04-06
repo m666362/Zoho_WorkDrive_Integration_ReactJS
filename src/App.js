@@ -257,6 +257,15 @@ const App = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Backdrop
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={state.loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         {/* {JSON.stringify(stateSettings)} */}
         <Tabs
@@ -300,15 +309,6 @@ const App = () => {
                   name={setting?.Name}
                   settingId={setting?.settingId}
                 />
-                <Backdrop
-                  sx={{
-                    color: "#fff",
-                    zIndex: (theme) => theme.zIndex.drawer + 1,
-                  }}
-                  open={state.loading}
-                >
-                  <CircularProgress color="inherit" />
-                </Backdrop>
               </div>
             </TabPanel>
           );

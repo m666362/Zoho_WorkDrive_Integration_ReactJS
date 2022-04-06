@@ -186,7 +186,7 @@ export default function ActionAreaCard({ file }) {
         )}
         <br />
         <Grid className={classes.details}>
-          <Typography variant="h6">{file?.attributes.name.length<14?file?.attributes.name:`${file?.attributes.name.substr(0, 14)}...`}</Typography>
+          <Typography variant="h6">{file?.attributes.name.length<12?file?.attributes.name:`${file?.attributes.name.substr(0, 12)}...`}</Typography>
         </Grid>
       </Grid>
       <ModalPdf profileImage={profileImage} open={open} setOpen={setOpen} />
