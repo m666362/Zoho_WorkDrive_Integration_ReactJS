@@ -164,11 +164,9 @@ function Response(props) {
     }
   }
 
-
   useEffect(() => {
     console.log({ XXXapiSetsDataXXX: state?.settingData });
   });
-
 
   async function setBreadCrumbsUrl(file, data) {
     state?.setBreadCrumbsSettingData(settingId, file);
@@ -372,7 +370,7 @@ function Response(props) {
               {filteredData?.map((file, index) => {
                 if (file.attributes.type == "folder")
                   return (
-                    <Grid item xs={12} sm={4} md={3}>
+                    <Grid item xs={6} sm={4} md={3} lg={2}>
                       <CommonComponent
                         settingId={settingId}
                         file={file}
@@ -404,14 +402,15 @@ function Response(props) {
             {!state?.settingData?.[settingId]?.listView ? (
               <Grid
                 container
-                spacing={true ? { xs: 2, md: 4 } : {}}
-                rowSpacing={false ? 0 : 1}
-                columnSpacing={false ? {} : { xs: 1, sm: 2, md: 3 }}
+                spacing={{ xs: 2, md: 3 }}
+                // spacing={true ? { xs: 2, md: 3 } : {}}
+                // rowSpacing={false ? 0 : 1}
+                columnSpacing={{ xs: 2, sm: 2, md: 3 }}
               >
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={12} sm={6} md={4}>
+                      <Grid item xs={6} sm={4} md={3} lg={2}>
                         <CommonComponent
                           settingId={settingId}
                           file={file}
@@ -429,27 +428,23 @@ function Response(props) {
             ) : (
               <Grid
                 container
-                spacing={
-                  state?.settingData?.[settingId]?.listView
-                    ? { xs: 2, md: 3 }
-                    : {}
-                }
-                columns={
-                  state?.settingData?.[settingId]?.listView
-                    ? { xs: 4, sm: 8, md: 12 }
-                    : {}
-                }
-                rowSpacing={state?.settingData?.[settingId]?.listView ? 0 : 1}
-                columnSpacing={
-                  state?.settingData?.[settingId]?.listView
-                    ? {}
-                    : { xs: 1, sm: 2, md: 3 }
-                }
+                spacing={{ xs: 2, md: 4 }}
+                // columns={
+                //   state?.settingData?.[settingId]?.listView
+                //     ? { xs: 12, sm: 6, md: 6 }
+                //     : { xs: 12, sm: 6, md: 6 }
+                // }
+                // rowSpacing={state?.settingData?.[settingId]?.listView ? 0 : 1}
+                // columnSpacing={
+                //   state?.settingData?.[settingId]?.listView
+                //     ? { xs: 2, sm: 2, md: 3 }
+                //     : { xs: 1, sm: 2, md: 3 }
+                // }
               >
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={12} md={3}>
+                      <Grid item xs={6} sm={4} md={3} lg={2}>
                         <CommonComponent
                           settingId={settingId}
                           file={file}
@@ -480,112 +475,108 @@ function Response(props) {
 
 export default Response;
 
+// async function handleClick(file, data) {
+//   if (data) {
+//     console.log({ handleClickIdFound: "id found handleClick", file });
+//     checker.current = checker.current + 1;
+//     setSearchVal("");
+//     state?.setApiSettingData(settingId, file, data);
+//     setPost(data);
+//   } else {
+//     try {
+//       console.log({ handleClickNotFound: "id not  found handleClick", file });
+//       let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+//       checker.current = checker.current + 1;
 
+//       state?.setApiSettingData(settingId, file, res.data);
+//       setPost(res.data);
+//       setSearchVal("");
+//     } catch (error) {
+//       console.log({ error });
+//     }
+//   }
 
-  // async function handleClick(file, data) {
-  //   if (data) {
-  //     console.log({ handleClickIdFound: "id found handleClick", file });
-  //     checker.current = checker.current + 1;
-  //     setSearchVal("");
-  //     state?.setApiSettingData(settingId, file, data);
-  //     setPost(data);
-  //   } else {
-  //     try {
-  //       console.log({ handleClickNotFound: "id not  found handleClick", file });
-  //       let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
-  //       checker.current = checker.current + 1;
+//   // console.log({
+//   //   file: file?.id,
+//   //   hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+//   //     file?.id
+//   //   ),
+//   //   previous: state?.settingData?.[settingId]?.previousData,
+//   // });
+//   // if (
+//   //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+//   // ) {
+//   //   console.log({ handleClickIdFound: "id found handleClick", file });
+//   //   setSearchVal("");
+//   //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+//   //   state?.setApiSettingData(
+//   //     settingId,
+//   //     file,
+//   //     state?.settingData?.[settingId]?.previousData?.[file?.id]
+//   //   );
+//   // } else {
+//   //   try {
+//   //     console.log({ handleClickNotFound: "id not  found handleClick", file });
+//   //     let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
 
-  //       state?.setApiSettingData(settingId, file, res.data);
-  //       setPost(res.data);
-  //       setSearchVal("");
-  //     } catch (error) {
-  //       console.log({ error });
-  //     }
-  //   }
+//   //     await state?.setApiSettingData(settingId, file, res.data);
+//   //     setPost(res.data);
+//   //     setSearchVal("");
+//   //   } catch (error) {
+//   //     console.log({ error });
+//   //   }
+//   // }
+// }
 
-  //   // console.log({
-  //   //   file: file?.id,
-  //   //   hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
-  //   //     file?.id
-  //   //   ),
-  //   //   previous: state?.settingData?.[settingId]?.previousData,
-  //   // });
-  //   // if (
-  //   //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
-  //   // ) {
-  //   //   console.log({ handleClickIdFound: "id found handleClick", file });
-  //   //   setSearchVal("");
-  //   //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
-  //   //   state?.setApiSettingData(
-  //   //     settingId,
-  //   //     file,
-  //   //     state?.settingData?.[settingId]?.previousData?.[file?.id]
-  //   //   );
-  //   // } else {
-  //   //   try {
-  //   //     console.log({ handleClickNotFound: "id not  found handleClick", file });
-  //   //     let res = await ApiCall.getFoldersItem(userAccessToken, file?.id);
+// async function setBreadCrumbsUrl(file, data) {
+//   state?.setBreadCrumbsSettingData(settingId, file);
+//   setPost(data);
+//   console.log({
+//     breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
+//   });
+//   setSearchVal("");
+//   console.log({
+//     setBread: {
+//       data,
+//       file: file?.id,
+//       hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
+//         file?.id
+//       ),
+//       settingId: settingId,
+//       previous: state?.settingData,
+//     },
+//   });
 
-  //   //     await state?.setApiSettingData(settingId, file, res.data);
-  //   //     setPost(res.data);
-  //   //     setSearchVal("");
-  //   //   } catch (error) {
-  //   //     console.log({ error });
-  //   //   }
-  //   // }
-  // }
+//   // if (
+//   //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
+//   // ) {
+//   //   console.log(
+//   //     { setBreadCrumbsUrlFound: "id found setBreadCrumbsUrl" },
+//   //     file
+//   //   );
+//   //   state?.setBreadCrumbsSettingData(settingId, file);
+//   //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
+//   //   console.log({
+//   //     breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
+//   //   });
+//   //   setSearchVal("");
+//   // } else {
+//   //   console.log({
+//   //     setBreadCrumbsUrlNotFount: "id not Found found setBreadCrumbsUrl",
+//   //     file,
+//   //   });
+//   //   try {
+//   //     const response = await ApiCall.getFoldersItem(
+//   //       userAccessToken,
+//   //       file?.id
+//   //     );
 
-  
-  // async function setBreadCrumbsUrl(file, data) {
-  //   state?.setBreadCrumbsSettingData(settingId, file);
-  //   setPost(data);
-  //   console.log({
-  //     breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
-  //   });
-  //   setSearchVal("");
-  //   console.log({
-  //     setBread: {
-  //       data,
-  //       file: file?.id,
-  //       hit: state?.settingData?.[settingId]?.previousData?.hasOwnProperty(
-  //         file?.id
-  //       ),
-  //       settingId: settingId,
-  //       previous: state?.settingData,
-  //     },
-  //   });
-
-
-  //   // if (
-  //   //   state?.settingData?.[settingId]?.previousData?.hasOwnProperty(file?.id)
-  //   // ) {
-  //   //   console.log(
-  //   //     { setBreadCrumbsUrlFound: "id found setBreadCrumbsUrl" },
-  //   //     file
-  //   //   );
-  //   //   state?.setBreadCrumbsSettingData(settingId, file);
-  //   //   setPost(state?.settingData?.[settingId]?.previousData?.[file?.id]);
-  //   //   console.log({
-  //   //     breadCrumbs: state?.settingData?.[settingId]?.breadCrumbs,
-  //   //   });
-  //   //   setSearchVal("");
-  //   // } else {
-  //   //   console.log({
-  //   //     setBreadCrumbsUrlNotFount: "id not Found found setBreadCrumbsUrl",
-  //   //     file,
-  //   //   });
-  //   //   try {
-  //   //     const response = await ApiCall.getFoldersItem(
-  //   //       userAccessToken,
-  //   //       file?.id
-  //   //     );
-
-  //   //     state?.setApiSettingData(settingId, file?.id, response.data);
-  //   //     state?.setBreadCrumbsSettingData(settingId, file);
-  //   //     setPost(response.data);
-  //   //     setSearchVal("");
-  //   //   } catch (error) {
-  //   //     console.log(error);
-  //   //   }
-  //   // }
-  // }
+//   //     state?.setApiSettingData(settingId, file?.id, response.data);
+//   //     state?.setBreadCrumbsSettingData(settingId, file);
+//   //     setPost(response.data);
+//   //     setSearchVal("");
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //   }
+//   // }
+// }

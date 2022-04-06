@@ -5,11 +5,11 @@ import { Box } from "@mui/system";
 import useTrackedStore from "../../store/useTrackedStore";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@material-ui/core";
+const imgSize = window.screen.width/2.5;
 
 const style = {
   position: "relative",
-  maxWidth: "1100px",
-  width: "100%",
+  width: `${imgSize}px`,
   top: "50%",
   left: "50%",
   height: "auto",

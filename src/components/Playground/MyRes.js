@@ -104,7 +104,7 @@ function MyRes(props) {
             setSearchVal={setSearchVal}
             handleClick={handleClick}
           />
-          <Backdrop
+          {/* <Backdrop
             sx={{
               color: "#fff",
               zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -112,7 +112,7 @@ function MyRes(props) {
             open={state.loading}
           >
             <CircularProgress color="inherit" />
-          </Backdrop>
+          </Backdrop> */}
         </>
       )}
     </>

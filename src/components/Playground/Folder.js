@@ -32,12 +32,12 @@ function Folder({ icon, title, details }) {
   return (
     <Grid className={classes.grid} container>
       <Grid item lg={2}>
-        <Item sx={{ visibility: "hidden", marginTop: "-23px" }}>.</Item>
+        {/* <Item sx={{ visibility: "hidden", marginTop: "-23px" }}>.</Item> */}
         <Item elevation={0}>{icon}</Item>
       </Grid>
       <Grid item lg={10}>
         <Item className={classes.item} elevation={0}>
-          <Typography variant="h6">{title.length<10?title:`${title.substr(0, 10)}...`}</Typography>
+          <Typography variant="h6">{ title.length<14?title:`${title.substr(0, 14)}...`}</Typography>
         </Item>
       </Grid>
     </Grid>

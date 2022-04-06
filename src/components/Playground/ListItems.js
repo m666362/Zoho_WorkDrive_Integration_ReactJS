@@ -11,6 +11,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import CloseIcon from "@mui/icons-material/Close";
 
+import { makeStyles } from "@mui/styles";
 import * as ApiCall from "./api/ApiCalling";
 
 import ModalPdf from "./ModalPdf";
@@ -18,6 +19,21 @@ import ModalPdf from "./ModalPdf";
 import useTrackedStore from "../../store/useTrackedStore";
 import ModalFile from "./ModalFile";
 import ModalImage from "./ModalImage";
+
+const useStyles = makeStyles({
+  grid: {
+    border: "1px solid #E0E0E0",
+    backgroundColor: "#e4f5ff",
+    borderRadius: "5px",
+    "&:hover": {
+      boxShadow: "0 0 1px 1px #E0E0E0",
+      transitionDuration: "0.3s",
+    },
+  },
+  item: {
+    textAlign: "left !important",
+  },
+});
 
 const style = {
   position: "absolute",
@@ -37,6 +53,7 @@ const style = {
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
+  width: "100%",
   textAlign: "left",
   color: theme.palette.text.secondary,
   display: "flex",
@@ -46,6 +63,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function ListItems({ file }) {
+  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const [profileImage, setProfileImage] = React.useState("");
@@ -95,11 +113,10 @@ function ListItems({ file }) {
   };
 
   return (
-    <>
+    <Grid className={classes.grid} container>
       <Item
-        container
+        className={classes.item}
         wrap="nowrap"
-        spacing={1}
         draggable="true"
         id={file.id}
         onDragStart={(e) => handleStart(e, { file: file })}
@@ -110,13 +127,10 @@ function ListItems({ file }) {
         }}
       >
         <Grid item>
-          <Avatar sx={{ margin: 1 }}>{file?.attributes.extn}</Avatar>
+          <Avatar sx={{ width: 36, height: 36, mr: 2}}>{file?.attributes.extn}</Avatar>
         </Grid>
         <Grid item xs>
-          <Typography>{file?.attributes.name}</Typography>
-        </Grid>
-        <Grid item xs>
-          <Typography>{file.attributes.created_time_i18}</Typography>
+          <Typography>{file?.attributes?.name?.length<=20?file?.attributes?.name:`${file?.attributes?.name.substr(0, 20)}...`}</Typography>
         </Grid>
       </Item>
 
@@ -127,8 +141,11 @@ function ListItems({ file }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {
+          {/* {
             file.attributes.type=="image"? <img width="100%" alt="" src={profileImage} onClick={handleClose}/>:""
+          } */}
+          {
+            file.attributes.type=="image"? <ModalImage open={open} setOpen={setOpen} profileImage={profileImage} />:""
           }
           {
             file.attributes.type=="pdf"?<ModalPdf width="100%" alt="" open={open} setOpen={setOpen} profileImage={profileImage}  />:""
@@ -145,7 +162,7 @@ function ListItems({ file }) {
           } */}
         </Box>
       </Modal>
-    </>
+    </Grid>
   );
 }
 

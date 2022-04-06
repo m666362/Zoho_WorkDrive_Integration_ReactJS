@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const base_url = `https://workdrive.zoho.com/api`;
-const base_url = `http://192.168.0.107:3005/api/v1/storage/workdrive`;
+const base_url = `http://localhost:3005/api/v1/storage/workdrive`;
 
 export const getFoldersItem = (userAccessToken, folder_id) => {
   const URL = `${base_url}/${folder_id}/files`;

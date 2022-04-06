@@ -5,13 +5,13 @@ import { Box } from "@mui/system";
 import useTrackedStore from "../../store/useTrackedStore";
 import PdfViewer from "./PdfViewer";
 import CloseIcon from "@mui/icons-material/Close";
-
+const imgSize = window.screen.width/2.5;
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
-  maxWidth: "1100px",
-  width: "100%",
+  // maxWidth: "1100px",
+  width: `${imgSize}px`,
   height: "auto",
   transform: "translate(-50%, -50%)",
   outline: "none",

@@ -271,6 +271,7 @@ export default function CustomSeparator({
                   });
                   const data = new FormData();
                   data.append("file", e.target.files[0]);
+                  data.append("content", "Lets try someting new");
                   let lastIndex =
                     state.settingData?.[settingId]?.breadCrumbs?.length - 1;
                   let lastIndexId =

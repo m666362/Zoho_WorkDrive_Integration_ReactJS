@@ -51,27 +51,31 @@ const CustomImage = styled("img")(({ theme }) => ({
 }));
 
 const BoxThumb = styled("Box")(({ theme }) => ({
-  [theme.breakpoints.down("md")]: {
-    width: "200px",
-    height: "170px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  [theme.breakpoints.up("md")]: {
-    width: "200px",
-    height: "170px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  [theme.breakpoints.up("xl")]: {
-    width: "200px",
-    height: "170px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  
+  minHeight: "100%",
+  minWidth: "100%",
+
+  // [theme.breakpoints.down("md")]: {
+  //   width: "200px",
+  //   height: "170px",
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
+  // [theme.breakpoints.up("md")]: {
+  //   width: "200px",
+  //   height: "170px",
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
+  // [theme.breakpoints.up("xl")]: {
+  //   width: "200px",
+  //   height: "170px",
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
 }));
 
 //  sx={{ display: "flex", justifyContent: "center", alignItems: "center", alignContent: "center", ...CustomImage}}
@@ -79,10 +83,8 @@ const BoxThumb = styled("Box")(({ theme }) => ({
 const useStyles = makeStyles({
   fileroot: {
     border: "2px solid #E0E0E0",
-    // padding: 10,
-    minWidth: 200,
-    minHeight: 170,
     borderRadius: "5px",
+    minHeight: "300px",
     "&:hover": {
       boxShadow: "0 0 1px 1px #E0E0E0",
       transitionDuration: "0.3s",
@@ -189,8 +191,8 @@ export default function FileImageCard({ file }) {
   const classes = useStyles();
 
   return (
-    <div>
-      <div
+    <Grid>
+      <Grid
         tabIndex="1"
         className={classes.fileroot}
         onClick={() => handleClickOpen(file)}
@@ -240,18 +242,18 @@ export default function FileImageCard({ file }) {
           <DescriptionIcon  />
         </BoxThumb>
         <br />
-        <div>
+        <Grid>
           <Typography variant="h6">{file?.attributes.name}</Typography>
           <Typography variant="body1">{file?.attributes.name}</Typography>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
       <ModalFile
         open={open}
         setOpen={setOpen}
         profileImage={profileImage}
         file={file}
       />
-      <div>
+      <Grid>
         {/* <Dialog
           fullScreen
           open={open}
@@ -289,8 +291,8 @@ export default function FileImageCard({ file }) {
             )}                      
           </Grid>
         </Dialog> */}
-      </div>
-    </div>
+      </Grid>
+    </Grid>
     // <div xs={12}>
     //   <Card
     //     display={"inline"}

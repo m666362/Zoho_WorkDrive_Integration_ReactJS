@@ -44,27 +44,29 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const CustomImage = styled("img")(({ theme }) => ({
-  [theme.breakpoints.down("md")]: {
-    width: "200px",
-    height: "170px",
-  },
-  [theme.breakpoints.up("md")]: {
-    width: "200px",
-    height: "170px",
-  },
-  [theme.breakpoints.up("xl")]: {
-    width: "200px",
-    height: "170px",
-  },
+  
+  minHeight: "210px",
+  minWidth: "100%",
+
+  // [theme.breakpoints.down("md")]: {
+  //   width: "200px",
+  //   height: "170px",
+  // },
+  // [theme.breakpoints.up("md")]: {
+  //   width: "200px",
+  //   height: "170px",
+  // },
+  // [theme.breakpoints.up("xl")]: {
+  //   width: "200px",
+  //   height: "170px",
+  // },
 }));
 
 const useStyles = makeStyles({
   fileroot: {
     border: "2px solid #E0E0E0",
-    // padding: 10,
-    minWidth: 200,
-    minHeight: 170,
     borderRadius: "5px",
+    minHeight: "300px",
     "&:hover": {
       boxShadow: "0 0 1px 1px #E0E0E0",
       transitionDuration: "0.3s",
@@ -86,27 +88,31 @@ const useStyles = makeStyles({
 });
 
 const BoxThumb = styled("Box")(({ theme }) => ({
-  [theme.breakpoints.down("md")]: {
-    width: "200px",
-    height: "170px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  [theme.breakpoints.up("md")]: {
-    width: "300px",
-    height: "170px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  [theme.breakpoints.up("xl")]: {
-    width: "433px",
-    height: "300px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
+  
+  minHeight: "100%",
+  minWidth: "100%",
+
+  // [theme.breakpoints.down("md")]: {
+  //   width: "200px",
+  //   height: "170px",
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
+  // [theme.breakpoints.up("md")]: {
+  //   width: "300px",
+  //   height: "170px",
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
+  // [theme.breakpoints.up("xl")]: {
+  //   width: "433px",
+  //   height: "300px",
+  //   display: "flex",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // },
 }));
 
 export default function ActionAreaCard({ file }) {
@@ -161,8 +167,10 @@ export default function ActionAreaCard({ file }) {
   };
 
   return (
-    <div>
-      <div
+    <Grid container>
+      <Grid
+        item
+        container
         tabIndex="1"
         className={classes.fileroot}
         onClick={() => handleClickOpen(file)}
@@ -177,12 +185,11 @@ export default function ActionAreaCard({ file }) {
           </BoxThumb>
         )}
         <br />
-        <div className={classes.details}>
-          <Typography variant="h6">{file?.attributes.name}</Typography>
-          <Typography variant="body1">{file?.attributes.name}</Typography>
-        </div>
-      </div>
+        <Grid className={classes.details}>
+          <Typography variant="h6">{file?.attributes.name.length<14?file?.attributes.name:`${file?.attributes.name.substr(0, 14)}...`}</Typography>
+        </Grid>
+      </Grid>
       <ModalPdf profileImage={profileImage} open={open} setOpen={setOpen} />
-    </div>
+    </Grid>
   );
 }
