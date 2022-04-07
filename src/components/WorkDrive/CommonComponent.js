@@ -300,69 +300,80 @@ const InputDecider = ({
       "fileSizeInBytes",
       file.file.attributes.storage_info.size_in_bytes
     );
+
+    console.log({element: e});
     // e.preventDefault();
     // e.stopPropagation();
   };
 
   const handleDrop = (e, file) => {
-    console.log({ e: file.id });
-    let childId = e.dataTransfer.getData("dropFile");
-    // let childType = e.dataTransfer.getData("fileType");
-    // let childName = e.dataTransfer.getData("fileName");
-    // let childPermalink = e.dataTransfer.getData("filePermanentLink");
-    // let childSize = e.dataTransfer.getData("fileSize");
-    // let childSizeInBytes = e.dataTransfer.getData("fileSizeInBytes");
+    // console.log({ e, file: file.id });
+    console.log({
+              attributes: {
+                Permalink: e.dataTransfer.getData("filePermanentLink"),
+                parent_id: file?.id,
+                FileName: e.dataTransfer.getData("fileName"),
+                resource_id: e.dataTransfer.getData("dropFile"),
+                childSize: e.dataTransfer.getData("fileSize"),
+              },
+              type: e.dataTransfer.getData("fileType"),
+            });
+    // let childId = e.dataTransfer.getData("dropFile");
+    // // let childType = e.dataTransfer.getData("fileType");
+    // // let childName = e.dataTransfer.getData("fileName");
+    // // let childPermalink = e.dataTransfer.getData("filePermanentLink");
+    // // let childSize = e.dataTransfer.getData("fileSize");
+    // // let childSizeInBytes = e.dataTransfer.getData("fileSizeInBytes");
 
-    let response = {
-      data: {
-        data: [
-          {
-            attributes: {
-              Permalink: e.dataTransfer.getData("filePermanentLink"),
-              parent_id: file.id,
-              FileName: e.dataTransfer.getData("fileName"),
-              resource_id: e.dataTransfer.getData("dropFile"),
-              childSize: e.dataTransfer.getData("fileSize"),
-            },
-            type: e.dataTransfer.getData("fileType"),
-          },
-        ],
-      },
-    };
+    // let response = {
+    //   data: {
+    //     data: [
+    //       {
+    //         attributes: {
+    //           Permalink: e.dataTransfer.getData("filePermanentLink"),
+    //           parent_id: file?.id,
+    //           FileName: e.dataTransfer.getData("fileName"),
+    //           resource_id: e.dataTransfer.getData("dropFile"),
+    //           childSize: e.dataTransfer.getData("fileSize"),
+    //         },
+    //         type: e.dataTransfer.getData("fileType"),
+    //       },
+    //     ],
+    //   },
+    // };
 
-    let myCustomFile = FileUploadResponse.makeCustomFile(response);
-    //  previousParent: e.dataTransfer.getData("dropFileParentId"),
-    if (childId) {
-      ApiCall.moveFile(state?.token, file, childId)
-        .then((response) => {
-          alert(JSON.stringify(response));
-          console.log({ resToBreadCrumb: response });
-          let xArray = post.filter((file) => file.id != childId);
-          setSnackOpen(true);
-          setPost(xArray);
+    // let myCustomFile = FileUploadResponse.makeCustomFile(response);
+    // //  previousParent: e.dataTransfer.getData("dropFileParentId"),
+    // if (childId && childId!==file?.id) {
+    //   ApiCall.moveFile(state?.token, file, childId)
+    //     .then((response) => {
+    //       alert(JSON.stringify(response));
+    //       console.log({ resToBreadCrumb: response });
+    //       let xArray = post.filter((file) => file.id != childId);
+    //       setSnackOpen(true);
+    //       setPost(xArray);
 
-          let lastIndex =
-            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
-          let lastIndexId =
-            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
-          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
-          // state?.setApiSettingData(settingId, lastIndexId, xArray);
+    //       let lastIndex =
+    //         state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+    //       let lastIndexId = state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+    //       state?.setAddItemSettingData(settingId, lastIndexId, xArray);
+    //       // state?.setApiSettingData(settingId, lastIndexId, xArray);
 
-          if (state?.settingData?.[settingId]?.previousData?.[file?.id]) {
-            let tempArray = state?.settingData?.[settingId]?.previousData?.[
-              file?.id
-            ].concat([myCustomFile]);
-            state?.setAddItemSettingData(settingId, file?.id, tempArray);
-            // state?.setApiSettingData(settingId, file?.id, tempArray);
-          }
-          e.dataTransfer.setData("dropFile", null);
-          console.log(response);
-        })
-        .catch((error) => {
-          alert(error);
-          console.log(error);
-        });
-    }
+    //       if (state?.settingData?.[settingId]?.previousData?.[file?.id]) {
+    //         let tempArray = state?.settingData?.[settingId]?.previousData?.[
+    //           file?.id
+    //         ].concat([myCustomFile]);
+    //         state?.setAddItemSettingData(settingId, file?.id, tempArray);
+    //         // state?.setApiSettingData(settingId, file?.id, tempArray);
+    //       }
+    //       e.dataTransfer.setData("dropFile", null);
+    //       console.log(response);
+    //     })
+    //     .catch((error) => {
+    //       alert(error);
+    //       console.log(error);
+    //     });
+    // }
   };
 
   let inputProps = {
@@ -424,22 +435,6 @@ const InputDecider = ({
           onDragStart={(e) => handleStart(e, { file: file })}
         >
           <ActionAreaCard file={file} />
-        </Grid>
-      );
-      break;
-    case "file":
-      return (
-        <Grid
-          draggable="true"
-          id={file.id}
-          onDragStart={(e) => handleStart(e, { file: file })}
-        >
-          {file.attributes.extn === "zip" ? (
-            <FileImageCard file={file} />
-          ) : (
-            <div>Hello</div>
-            // <FileImageCard file={file} />
-          )}
         </Grid>
       );
       break;

@@ -239,12 +239,11 @@ export default function FileImageCard({ file }) {
           </BoxThumb>
         )} */}
         <BoxThumb>
-          <DescriptionIcon  />
+          <DescriptionIcon  sx={{width: 200, height: 235}}/>
         </BoxThumb>
         <br />
         <Grid>
           <Typography variant="h6">{file?.attributes.name}</Typography>
-          <Typography variant="body1">{file?.attributes.name}</Typography>
         </Grid>
       </Grid>
       <ModalFile
