@@ -5,7 +5,7 @@ import Response from "./Response";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-function MyRes(props) {
+function RootFolderResponse(props) {
   const { rootFolderId, userAccessToken, name, settingId } = props;
   const state = useTrackedStore();
   const [post, setPost] = useState([]);
@@ -119,4 +119,4 @@ function MyRes(props) {
   );
 }
 
-export default MyRes;
+export default RootFolderResponse;

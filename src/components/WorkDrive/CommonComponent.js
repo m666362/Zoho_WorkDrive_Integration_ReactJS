@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ActionAreaCard from "./ImageCard";
+import ActionAreaCard from "./DisplayPdf";
 
 import Button from "@mui/material/Button";
 import { useForm, Controller } from "react-hook-form";
@@ -32,7 +32,7 @@ import { makeStyles } from "@mui/styles";
 import "./project_folder.css";
 import ListItems from "./ListItems";
 import useTrackedStore from "../../store/useTrackedStore";
-import FileImageCard from "./FileImageCard";
+import FileImageCard from "./DisplayFile";
 
 const useStyles = makeStyles({
   grid: {

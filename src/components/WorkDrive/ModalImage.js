@@ -5,14 +5,15 @@ import { Box } from "@mui/system";
 import useTrackedStore from "../../store/useTrackedStore";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@material-ui/core";
-const imgSize = window.screen.width/2.5;
+const imgWidth = window.screen.width/2.5;
+const imgHeight = window.screen.height/2.5;
 
 const style = {
   position: "relative",
-  width: `${imgSize}px`,
+  width: `${imgWidth}px`,
   top: "50%",
   left: "50%",
-  height: "auto",
+  maxHeight: `${imgHeight}px`,
   transform: "translate(-50%, -50%)",
   outline: "none",
   background: "#ffffff",
