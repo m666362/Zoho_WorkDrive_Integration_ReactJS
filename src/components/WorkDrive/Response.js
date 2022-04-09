@@ -39,6 +39,7 @@ function Response(props) {
   // const [searchVal, setSearchVal] = React.useState("");
   const [snackOpen, setSnackOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [pasteOpen, setPasteOpen] = React.useState(false);
   let moveCopyItem = useRef(null);
 
   const handleClickOpen = () => {
@@ -59,9 +60,14 @@ function Response(props) {
   }
 
   function moveCopyData(e, data) {
+    state.setPasteOpen(true)
     moveCopyItem.current = data;
     console.log({ moveCopyItem });
   }
+
+  // useEffect(()=>{
+  //   state.setPasteOpen(false)
+  // }, [moveCopyItem])
 
   async function pasteData(e, data) {
     console.log({
@@ -370,8 +376,9 @@ function Response(props) {
               {filteredData?.map((file, index) => {
                 if (file.attributes.type == "folder")
                   return (
-                    <Grid item xs={6} sm={4} md={3} lg={2} >
+                    <Grid item xs={6} sm={4} md={3} lg={2}>
                       <CommonComponent
+                        pasteOpen={pasteOpen}
                         settingId={settingId}
                         file={file}
                         handleClick={handleClick}
@@ -410,7 +417,14 @@ function Response(props) {
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={6} sm={4} md={3} lg={2} sx={{ cursor: "pointer" }}>
+                      <Grid
+                        item
+                        xs={6}
+                        sm={4}
+                        md={3}
+                        lg={2}
+                        sx={{ cursor: "pointer" }}
+                      >
                         <CommonComponent
                           settingId={settingId}
                           file={file}
@@ -444,7 +458,14 @@ function Response(props) {
                 {filteredData?.map((file, index) => {
                   if (file.attributes.type !== "folder")
                     return (
-                      <Grid item xs={6} sm={4} md={3} lg={2} sx={{ cursor: "pointer" }}>
+                      <Grid
+                        item
+                        xs={6}
+                        sm={4}
+                        md={3}
+                        lg={2}
+                        sx={{ cursor: "pointer" }}
+                      >
                         <CommonComponent
                           settingId={settingId}
                           file={file}

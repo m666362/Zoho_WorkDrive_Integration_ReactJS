@@ -44,6 +44,7 @@ const useStyles = makeStyles({
 });
 
 function CommonComponent({
+  pasteOpen,
   file,
   handleClick,
   settingId,
@@ -175,7 +176,7 @@ function CommonComponent({
       <ContextMenuTrigger id={file.id}>
         {state.settingData?.[settingId]?.listView &&
         file.attributes.type !== "folder" ? (
-          <ListItems file={file}  />
+          <ListItems file={file} />
         ) : (
           <InputDecider
             file={file}
@@ -218,27 +219,19 @@ function CommonComponent({
           <DriveFileMoveIcon className="RiPencilLine" />
           <span> Move </span>
         </MenuItem>
-        <MenuItem
-          data={{
-            pasteFile: file,
-            pastePost:
-              state?.settingData?.[settingId]?.previousData?.[file?.id],
-          }}
-          onClick={pasteData}
-        >
-          <ContentPasteIcon className="RiPencilLine" />
-          <span> Paste </span>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            console.log({
-              file: file,
-            });
-          }}
-        >
-          <ContentPasteIcon className="RiPencilLine" />
-          <span> Details </span>
-        </MenuItem>
+        {state.pasteOpen && (
+          <MenuItem
+            data={{
+              pasteFile: file,
+              pastePost:
+                state?.settingData?.[settingId]?.previousData?.[file?.id],
+            }}
+            onClick={pasteData}
+          >
+            <ContentPasteIcon className="RiPencilLine" />
+            <span> Paste </span>
+          </MenuItem>
+        )}
       </ContextMenu>
 
       <Dialog

@@ -86,6 +86,10 @@ const store = (set) => ({
       state.userToken = `Bearer ${data}`;
     }),
   settingData: {},
+  pasteOpen: false,
+  setPasteOpen: (bool)=> set((state)=>{
+    state.pasteOpen = bool
+  }),
   setInitializeData: (settings) =>
     set((state) => {
       let tempData = {};
