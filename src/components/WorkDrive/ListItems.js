@@ -94,9 +94,19 @@ function ListItems({ file }) {
     // window.open(fileURL);
   };
 
-  const handleStart = (e, file) => {
-    console.log(file.file);
-    e.dataTransfer.setData("dropFile", file.file.id);
+  const handleStart = (event, file) => {
+    event.dataTransfer.setData(
+      "moveData",
+      JSON.stringify({
+        fileName: file?.file?.attributes?.name,
+        dropFile: event.target.id,
+        fileType: file?.file?.attributes?.type,
+        dropFileParentId: file?.file?.attributes?.parent_id,
+        filePermanentLink: file?.file?.attributes?.permalink,
+        fileSize: file?.file?.attributes?.storage_info?.size,
+        fileSizeInBytes: file?.file?.attributes?.storage_info?.size_in_bytes,
+      })
+    );
     // e.preventDefault();
     // e.stopPropagation();
   };

@@ -46,7 +46,7 @@ export const makeCustomFile = (response) => {
         storage_used_by_workdrive_in_bytes: 0,
         storage_used_by_app_in_bytes: 0,
       },
-      type: makeType(response?.data?.data?.[0]?.attributes?.FileName.split(".")[1]),
+      type: response?.data?.data?.[0]?.attributes?.type ?? makeType(response?.data?.data?.[0]?.attributes?.FileName.split(".")[1]),
       created_time_i18: "Oct 9, 5:24 PM",
       modified_time_in_millisecond: 1634031692578,
       status_change_time: "Oct 12, 3:41 PM",

@@ -175,7 +175,7 @@ function CommonComponent({
       <ContextMenuTrigger id={file.id}>
         {state.settingData?.[settingId]?.listView &&
         file.attributes.type !== "folder" ? (
-          <ListItems file={file} />
+          <ListItems file={file}  />
         ) : (
           <InputDecider
             file={file}
@@ -288,92 +288,104 @@ const InputDecider = ({
 }) => {
   const classes = useStyles();
   const state = useTrackedStore();
-  const handleStart = (e, file) => {
-    console.log(file.file);
-    e.dataTransfer.setData("dropFile", file.file.id);
-    e.dataTransfer.setData("dropFileParentId", file.file.attributes.parent_id);
-    e.dataTransfer.setData("fileType", file.file.attributes.type);
-    e.dataTransfer.setData("fileName", file.file.attributes.name);
-    e.dataTransfer.setData("filePermanentLink", file.file.attributes.permalink);
-    e.dataTransfer.setData("fileSize", file.file.attributes.storage_info.size);
-    e.dataTransfer.setData(
-      "fileSizeInBytes",
-      file.file.attributes.storage_info.size_in_bytes
+  const handleStart = (event, file) => {
+    event.dataTransfer.setData(
+      "moveData",
+      JSON.stringify({
+        fileName: file?.file?.attributes?.name,
+        dropFile: event.target.id,
+        fileType: file?.file?.attributes?.type,
+        dropFileParentId: file?.file?.attributes?.parent_id,
+        filePermanentLink: file?.file?.attributes?.permalink,
+        fileSize: file?.file?.attributes?.storage_info?.size,
+        fileSizeInBytes: file?.file?.attributes?.storage_info?.size_in_bytes,
+      })
     );
 
-    console.log({element: e});
+    // console.log({ nameOfFilefile: file.attributes.name });
+    // e.dataTransfer.setData("dropFile", file.file.id);
+    // e.dataTransfer.setData("dropFileParentId", file.file.attributes.parent_id);
+    // e.dataTransfer.setData("fileType", file.file.attributes.type);
+    // e.dataTransfer.setData("fileName", "file.file.attributes.name");
+    // e.dataTransfer.setData("filePermanentLink", file.file.attributes.permalink);
+    // e.dataTransfer.setData("fileSize", file.file.attributes.storage_info.size);
+    // e.dataTransfer.setData(
+    //   "fileSizeInBytes",
+    //   file.file.attributes.storage_info.size_in_bytes
+    // );
+
+    // console.log("fileName", "file.file.attributes.name");
     // e.preventDefault();
     // e.stopPropagation();
   };
 
-  const handleDrop = (e, file) => {
-    // console.log({ e, file: file.id });
-    console.log({
-              attributes: {
-                Permalink: e.dataTransfer.getData("filePermanentLink"),
-                parent_id: file?.id,
-                FileName: e.dataTransfer.getData("fileName"),
-                resource_id: e.dataTransfer.getData("dropFile"),
-                childSize: e.dataTransfer.getData("fileSize"),
-              },
-              type: e.dataTransfer.getData("fileType"),
-            });
-    // let childId = e.dataTransfer.getData("dropFile");
-    // // let childType = e.dataTransfer.getData("fileType");
-    // // let childName = e.dataTransfer.getData("fileName");
-    // // let childPermalink = e.dataTransfer.getData("filePermanentLink");
-    // // let childSize = e.dataTransfer.getData("fileSize");
-    // // let childSizeInBytes = e.dataTransfer.getData("fileSizeInBytes");
-
-    // let response = {
-    //   data: {
-    //     data: [
-    //       {
-    //         attributes: {
-    //           Permalink: e.dataTransfer.getData("filePermanentLink"),
-    //           parent_id: file?.id,
-    //           FileName: e.dataTransfer.getData("fileName"),
-    //           resource_id: e.dataTransfer.getData("dropFile"),
-    //           childSize: e.dataTransfer.getData("fileSize"),
-    //         },
-    //         type: e.dataTransfer.getData("fileType"),
-    //       },
-    //     ],
+  const handleDrop = (event, file) => {
+    event.preventDefault();
+    var moveData = JSON.parse(event.dataTransfer.getData("moveData"));
+    // console.log({ moveData });
+    // // // console.log({ e, file: file.id });
+    // console.log({
+    //   attributes: {
+    //     Permalink: moveData?.filePermanentLink,
+    //     parent_id: file?.id,
+    //     FileName: moveData?.fileName,
+    //     resource_id: moveData?.dropFile,
+    //     childSize: moveData?.fileSize,
+    //     childSizeInBytes: moveData?.fileSizeInBytes
     //   },
-    // };
+    //   type: moveData?.fileType,
+    // });
+    let response = {
+      data: {
+        data: [
+          {
+            attributes: {
+              Permalink: moveData?.filePermanentLink,
+              parent_id: file?.id,
+              FileName: moveData?.fileName,
+              resource_id: moveData?.dropFile,
+              childSize: moveData?.fileSize,
+              childSizeInBytes: moveData?.fileSizeInBytes,
+              type: moveData?.fileType,
+            },
+          },
+        ],
+      },
+    };
 
-    // let myCustomFile = FileUploadResponse.makeCustomFile(response);
+    let myCustomFile = FileUploadResponse.makeCustomFile(response);
     // //  previousParent: e.dataTransfer.getData("dropFileParentId"),
-    // if (childId && childId!==file?.id) {
-    //   ApiCall.moveFile(state?.token, file, childId)
-    //     .then((response) => {
-    //       alert(JSON.stringify(response));
-    //       console.log({ resToBreadCrumb: response });
-    //       let xArray = post.filter((file) => file.id != childId);
-    //       setSnackOpen(true);
-    //       setPost(xArray);
+    if (moveData?.dropFile && moveData?.dropFile !== file?.id) {
+      ApiCall.moveFile(state?.token, file, moveData?.dropFile)
+        .then((response) => {
+          alert(JSON.stringify(response));
+          console.log({ resToBreadCrumb: response });
+          let xArray = post.filter((file) => file.id != moveData?.dropFile);
+          setSnackOpen(true);
+          setPost(xArray);
 
-    //       let lastIndex =
-    //         state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
-    //       let lastIndexId = state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
-    //       state?.setAddItemSettingData(settingId, lastIndexId, xArray);
-    //       // state?.setApiSettingData(settingId, lastIndexId, xArray);
+          let lastIndex =
+            state?.settingData?.[settingId]?.breadCrumbs?.length - 1;
+          let lastIndexId =
+            state?.settingData?.[settingId]?.breadCrumbs?.[lastIndex].id;
+          state?.setAddItemSettingData(settingId, lastIndexId, xArray);
+          // state?.setApiSettingData(settingId, lastIndexId, xArray);
 
-    //       if (state?.settingData?.[settingId]?.previousData?.[file?.id]) {
-    //         let tempArray = state?.settingData?.[settingId]?.previousData?.[
-    //           file?.id
-    //         ].concat([myCustomFile]);
-    //         state?.setAddItemSettingData(settingId, file?.id, tempArray);
-    //         // state?.setApiSettingData(settingId, file?.id, tempArray);
-    //       }
-    //       e.dataTransfer.setData("dropFile", null);
-    //       console.log(response);
-    //     })
-    //     .catch((error) => {
-    //       alert(error);
-    //       console.log(error);
-    //     });
-    // }
+          if (state?.settingData?.[settingId]?.previousData?.[file?.id]) {
+            let tempArray = state?.settingData?.[settingId]?.previousData?.[
+              file?.id
+            ].concat([myCustomFile]);
+            state?.setAddItemSettingData(settingId, file?.id, tempArray);
+            // state?.setApiSettingData(settingId, file?.id, tempArray);
+          }
+          event.dataTransfer.setData("moveData", null);
+          console.log(response);
+        })
+        .catch((error) => {
+          alert(error);
+          console.log(error);
+        });
+    }
   };
 
   let inputProps = {
@@ -440,7 +452,11 @@ const InputDecider = ({
       break;
     default:
       return (
-        <Grid>
+        <Grid
+          draggable="true"
+          id={file.id}
+          onDragStart={(e) => handleStart(e, { file: file })}
+        >
           <FileImageCard file={file} />
         </Grid>
       );
